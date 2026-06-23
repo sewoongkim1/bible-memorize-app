@@ -93,7 +93,7 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
-    <h1>오직 여호와의 율법을 즐거워하여 그의 율법을 주야로 묵상하는도다.(시 1:2)</h1>
+    <h1>오직 말씀(Sola Scriptura), 오직 은혜(Sola Gratia)</h1>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
