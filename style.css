@@ -180,7 +180,8 @@ h1 {
   gap: 10px;
 }
 
-.back-btn {
+.back-btn,
+.answer-btn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -189,13 +190,14 @@ h1 {
   color: var(--navy);
   font-weight: 700;
   cursor: pointer;
-  padding: 5px 13px;
+  padding: 7px 15px;
   border-radius: 20px;
   font-size: 13px;
   font-family: inherit;
   transition: background 0.15s, color 0.15s;
 }
-.back-btn:hover { background: var(--navy); color: var(--white); }
+.back-btn:hover,
+.answer-btn:hover { background: var(--navy); color: var(--white); }
 
 .test-screen {
   max-width: 480px;
@@ -298,18 +300,7 @@ h1 {
 }
 
 /* ---------- 정답 보기 ---------- */
-.answer-btn {
-  background: var(--cream);
-  border: 1.5px solid var(--border);
-  color: var(--navy);
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: inherit;
-}
-.answer-btn:hover { border-color: var(--navy); }
+/* .answer-btn 스타일은 .back-btn과 통일 (위쪽 공통 규칙 참고) */
 
 .answer-panel {
   margin-top: 14px;
