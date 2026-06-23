@@ -180,9 +180,11 @@ function renderTestScreen(verse, stage) {
 
   appEl.innerHTML = `
     <div class="test-screen">
-      <button class="back-btn" id="back-to-list-btn">← 목록</button>
       <div class="test-card">
-        <div class="test-stage">${stage}단계</div>
+        <div class="test-top">
+          <div class="test-stage">${stage}단계</div>
+          <button class="back-btn" id="back-to-list-btn">← 목록</button>
+        </div>
         <div class="test-ref">${verse.refShort}</div>
         <div class="test-sentence">${wordsHtml}</div>
         <button class="answer-btn" id="show-answer-btn">정답 보기</button>
