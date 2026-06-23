@@ -32,6 +32,7 @@
       display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
     .qr-no { font-family: "Nanum Myeongjo", serif; font-weight: 800; color: var(--gold); font-size: 14px; }
+    .qr-date { font-family: "Noto Sans KR", sans-serif; font-weight: 500; color: var(--gray); font-size: 12px; margin-left: 4px; }
     .qr-card img { width: 160px; height: 160px; border: 1px solid #eee; border-radius: 8px; }
     .qr-ref { font-weight: 700; color: var(--navy); font-size: 15px; }
     .qr-title { font-size: 12px; color: var(--gray); line-height: 1.4; min-height: 32px; }
@@ -68,6 +69,16 @@
     ];
     const GO_BASE = "go/?no=";
     const TOTAL_WEEKS = 52; // 52주 전체 표시
+    // 1회차 일요일(KST). 매주 +7일로 회차별 날짜를 계산한다.
+    const BASE_SUNDAY = "2026-01-04T00:00:00+09:00";
+
+    const dateFmt = new Intl.DateTimeFormat("ko-KR", {
+      timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
+    });
+    function weekDate(no, anchor) {
+      const d = new Date(anchor.getTime() + (no - 1) * 7 * 86400000);
+      return dateFmt.format(d).replace(/\s/g, "").replace(/\.$/, ""); // "2026.01.04"
+    }
 
     (async function () {
       const listEl = document.getElementById("list");
@@ -85,6 +96,9 @@
         } catch (e) { /* 폴백 */ }
       }
 
+      // 1회차 날짜는 시트 데이터가 있으면 그걸 기준, 없으면 상수 사용
+      const anchor = byNo[1] && byNo[1].date ? new Date(byNo[1].date) : new Date(BASE_SUNDAY);
+
       listEl.className = "grid";
       let html = "";
       for (let no = 1; no <= TOTAL_WEEKS; no++) {
@@ -93,7 +107,7 @@
         const ready = !!(v && v.url); // 매핑 URL이 있어야 등록됨
         html += `
           <div class="qr-card">
-            <div class="qr-no">${nn}회차</div>
+            <div class="qr-no">${nn}회차 <span class="qr-date">${weekDate(no, anchor)}</span></div>
             <img src="qr/qr-${nn}.png" alt="${nn}회차 QR" loading="lazy" />
             <div class="qr-ref">${v ? v.refShort : "—"}</div>
             <div class="qr-title">${(v && v.sermonTitle) || ""}</div>
