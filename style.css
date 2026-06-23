@@ -83,7 +83,7 @@ h1 {
 .page-title {
   display: block;
   text-align: center;
-  font-family: "Nanum Myeongjo", serif;
+  font-family: "Noto Sans KR", sans-serif; /* 헤더 tagline-main과 동일 폰트 */
   font-size: 12.8px;
   font-weight: 800;
   color: var(--navy);
