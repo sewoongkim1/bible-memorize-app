@@ -93,7 +93,7 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
-    <h1>오직 말씀(Sola Scriptura), 오직 은혜(Sola Gratia)</h1>
+    <span class="tagline-main">오직 말씀(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
