@@ -101,7 +101,7 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
-    <span class="page-title">오직 말씀(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
+    <span class="page-title">오직 성경(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
@@ -182,18 +182,22 @@ function renderTestScreen(verse, stage) {
     <div class="test-screen">
       <div class="test-card">
         <div class="test-top">
-          <div class="test-stage">${stage}단계</div>
+          <div class="test-head">
+            <div class="test-stage">${stage}단계</div>
+            <div class="test-ref">${verse.refShort}</div>
+          </div>
           <button class="back-btn" id="back-to-list-btn">← 목록</button>
         </div>
-        <div class="test-ref">${verse.refShort}</div>
         <div class="test-sentence">${wordsHtml}</div>
-        <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+        <div class="action-row">
+          <div id="result-area"></div>
+          <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+        </div>
         <div id="answer-panel" class="answer-panel" hidden>
           <div class="answer-title">정답</div>
           <div class="answer-text">${answerHtml}</div>
           <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
         </div>
-        <div id="result-area"></div>
         ${sermonBanner}
       </div>
     </div>
@@ -321,18 +325,13 @@ function checkAllComplete(inputs, verse, stage) {
 
   const resultEl = document.getElementById("result-area");
   resultEl.innerHTML = `
-    <div class="result-score">${accuracy}%</div>
-    <div class="result-label">${passed ? "통과! 🎉" : "다시 도전해보세요"}</div>
-    <div class="result-actions">
-      ${
-        passed && stage < 3
-          ? `<button class="next-btn" id="next-stage-btn">${stage + 1}단계로</button>`
-          : passed && stage === 3
-          ? `<div class="complete-badge">암송 완료 🙌</div>
-             <a class="sermon-link" href="${verse.url}" target="_blank">설교 보러가기 — ${verse.sermonTitle}</a>`
-          : `<button class="next-btn" id="retry-btn">다시 시도</button>`
-      }
-    </div>
+    ${
+      passed && stage < 3
+        ? `<button class="next-btn" id="next-stage-btn">${stage + 1}단계로</button>`
+        : passed && stage === 3
+        ? `<div class="complete-badge">암송 완료 🙌</div>`
+        : `<button class="next-btn" id="retry-btn">다시 시도</button>`
+    }
   `;
 
   if (passed && stage < 3) {

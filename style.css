@@ -164,7 +164,20 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+}
+.test-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 정답 보기 / 다음 단계 버튼을 한 줄에 (왼쪽: 다음 단계, 오른쪽: 정답 보기) */
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .back-btn {
@@ -241,7 +254,6 @@ h1 {
   font-weight: 700;
   font-size: 16px;
   color: var(--navy);
-  margin-bottom: 16px;
 }
 .test-sentence {
   font-family: "Gowun Batang", serif;
