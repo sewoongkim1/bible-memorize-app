@@ -93,7 +93,7 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
-    <h1>말씀 한 절 암송 테스트</h1>
+    <h1>오직 여호와의 율법을 즐거워하여 그의 율법을 주야로 묵상하는도다.(시 1:2)</h1>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
