@@ -67,40 +67,41 @@
       "https://script.google.com/macros/s/AKfycbzO4GDAy0hJBbZ-L3hVuZQI4cqnjiZdy2afUujnxmmAr8NAh1lJURhrfT37PaFanPR4PA/exec",
     ];
     const GO_BASE = "go/?no=";
+    const TOTAL_WEEKS = 52; // 52주 전체 표시
 
     (async function () {
       const listEl = document.getElementById("list");
-      let verses = null;
+
+      // 시트(verses.json) 데이터를 회차번호로 인덱싱 (없어도 진행)
+      const byNo = {};
       for (const url of DATA_URLS) {
         try {
           const res = await fetch(url, { cache: "no-cache" });
           const data = await res.json();
-          if (data.verses && data.verses.length) { verses = data.verses; break; }
+          if (data.verses && data.verses.length) {
+            data.verses.forEach((v) => (byNo[v.no] = v));
+            break;
+          }
         } catch (e) { /* 폴백 */ }
       }
-      if (!verses) {
-        listEl.className = "error";
-        listEl.textContent = "데이터를 불러오지 못했습니다.";
-        return;
-      }
 
-      verses.sort((a, b) => a.no - b.no);
       listEl.className = "grid";
-      listEl.innerHTML = verses
-        .map((v) => {
-          const nn = String(v.no).padStart(2, "0");
-          const ready = !!v.url;
-          return `
-            <div class="qr-card">
-              <div class="qr-no">${nn}회차</div>
-              <img src="qr/qr-${nn}.png" alt="${v.refShort} QR" loading="lazy" />
-              <div class="qr-ref">${v.refShort}</div>
-              <div class="qr-title">${v.sermonTitle || ""}</div>
-              <span class="qr-status ${ready ? "ready" : "pending"}">${ready ? "✓ 등록됨" : "… 준비중"}</span>
-              <a class="qr-go" href="${GO_BASE}${v.no}" target="_blank" rel="noopener">설교 보기 →</a>
-            </div>`;
-        })
-        .join("");
+      let html = "";
+      for (let no = 1; no <= TOTAL_WEEKS; no++) {
+        const nn = String(no).padStart(2, "0");
+        const v = byNo[no];
+        const ready = !!(v && v.url); // 매핑 URL이 있어야 등록됨
+        html += `
+          <div class="qr-card">
+            <div class="qr-no">${nn}회차</div>
+            <img src="qr/qr-${nn}.png" alt="${nn}회차 QR" loading="lazy" />
+            <div class="qr-ref">${v ? v.refShort : "—"}</div>
+            <div class="qr-title">${(v && v.sermonTitle) || ""}</div>
+            <span class="qr-status ${ready ? "ready" : "pending"}">${ready ? "✓ 등록됨" : "… 준비중"}</span>
+            <a class="qr-go" href="${GO_BASE}${no}" target="_blank" rel="noopener">설교 보기 →</a>
+          </div>`;
+      }
+      listEl.innerHTML = html;
     })();
   </script>
 </body>
