@@ -184,7 +184,7 @@ function renderTestScreen(verse, stage) {
         <div class="test-top">
           <div class="test-head">
             <div class="test-stage">${stage}단계</div>
-            <div class="test-ref">${verse.refShort}</div>
+            <div class="test-ref">${verse.refFull || verse.refShort}</div>
           </div>
           <button class="back-btn" id="back-to-list-btn">← 목록</button>
         </div>
