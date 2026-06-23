@@ -2,10 +2,13 @@
 // 성경 암송 온라인 테스트 — app.js
 // ============================================================
 
-// ★ 2단계에서 배포한 Apps Script 웹 앱 URL로 교체하세요
+// 데이터는 사이트에 저장된 정적 파일(verses.json)에서 읽는다.
+// 이 파일은 GitHub Actions가 주 1회 시트에서 자동 갱신한다.
+// (verses.json을 못 읽을 때만 아래 시트 API로 폴백)
+const DATA_URL = "verses.json";
 const API_URL = "https://script.google.com/macros/s/AKfycbzO4GDAy0hJBbZ-L3hVuZQI4cqnjiZdy2afUujnxmmAr8NAh1lJURhrfT37PaFanPR4PA/exec";
 
-let verses = []; // API에서 받아온 26개 구절 데이터
+let verses = []; // 화면에 쓰는 구절 데이터
 
 // ------------------------------------------------------------
 // 데이터 로드
@@ -14,19 +17,24 @@ async function loadVerses() {
   const listEl = document.getElementById("verse-list");
   listEl.innerHTML = "<p>불러오는 중...</p>";
 
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
+  // 1순위: 사이트에 저장된 verses.json, 실패 시 2순위: 시트 API
+  for (const url of [DATA_URL, API_URL]) {
+    try {
+      const res = await fetch(url, { cache: "no-cache" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      if (!data.verses || !data.verses.length) throw new Error("데이터 없음");
 
-    if (data.error) {
-      listEl.innerHTML = `<p class="error">오류: ${data.error}</p>`;
+      verses = data.verses;
+      renderVerseList(verses);
       return;
+    } catch (err) {
+      // verses.json 실패면 조용히 API로 폴백, 둘 다 실패면 오류 표시
+      if (url === API_URL) {
+        listEl.innerHTML = `<p class="error">연결 실패: ${err.message}</p>`;
+      }
     }
-
-    verses = data.verses;
-    renderVerseList(verses);
-  } catch (err) {
-    listEl.innerHTML = `<p class="error">연결 실패: ${err.message}</p>`;
   }
 }
 
