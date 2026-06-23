@@ -1,0 +1,27 @@
+회차 | 구절 | QR 파일 | 링크(QR 내용)
+-----|------|---------|----------
+1 | 시 119:105 | qr/qr-01.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=1
+2 | 창 12:2 | qr/qr-02.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=2
+3 | 수 1:8 | qr/qr-03.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=3
+4 | 출 13:22 | qr/qr-04.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=4
+5 | 레 20:26 | qr/qr-05.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=5
+6 | 행 16:31 | qr/qr-06.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=6
+7 | 행 16:14 | qr/qr-07.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=7
+8 | 눅 4:8 | qr/qr-08.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=8
+9 | 신 8:6 | qr/qr-09.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=9
+10 | 막 12:17 | qr/qr-10.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=10
+11 | 삿 8:23 | qr/qr-11.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=11
+12 | 벧전 4:16 | qr/qr-12.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=12
+13 | 막 11:3 | qr/qr-13.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=13
+14 | 막 16:6 | qr/qr-14.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=14
+15 | 민 14:24 | qr/qr-15.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=15
+16 | 삼상 26:24 | qr/qr-16.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=16
+17 | 잠 4:6 | qr/qr-17.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=17
+18 | 대상 22:12 | qr/qr-18.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=18
+19 | 눅 1:28 | qr/qr-19.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=19
+20 | 시 3:6 | qr/qr-20.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=20
+21 | 살전 5:16-18 | qr/qr-21.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=21
+22 | 마 28:19 | qr/qr-22.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=22
+23 | 행 16:10 | qr/qr-23.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=23
+24 | 시 116:1 | qr/qr-24.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=24
+25 | 계 2:7 | qr/qr-25.png | https://sewoongkim1.github.io/bible-memorize-app/go/?no=25
