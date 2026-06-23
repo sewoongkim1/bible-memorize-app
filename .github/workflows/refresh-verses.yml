@@ -22,14 +22,17 @@ jobs:
           python3 -c "import json; d=json.load(open('verses.new.json')); assert d.get('verses'), 'verses 없음'; print('구절 수:', len(d['verses']))"
           mv verses.new.json verses.json
 
+      - name: 리마인드 캘린더(.ics) 재생성
+        run: node tools/build-ics.js
+
       - name: 변경 있으면 커밋·푸시
         run: |
-          if git diff --quiet -- verses.json; then
+          if git diff --quiet -- verses.json reminders.ics; then
             echo "변경 없음 — 커밋 생략"
           else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add verses.json
-            git commit -m "주간 구절 데이터 자동 갱신"
+            git add verses.json reminders.ics
+            git commit -m "주간 구절 데이터 + 리마인드 캘린더 자동 갱신"
             git push
           fi
