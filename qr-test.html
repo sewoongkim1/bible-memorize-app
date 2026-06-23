@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>설교 QR 테스트 | 고척교회</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1a3a6b; --navy-dark: #0d1b3e; --gold: #c8a84b;
+      --cream: #fdf8f0; --gray: #6b7280; --border: #ddd6c8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Noto Sans KR", sans-serif; background: var(--cream); color: #222; }
+
+    .page-header {
+      background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6b 40%, #0d4a7a 100%);
+      color: #fff; text-align: center; padding: 22px 20px;
+    }
+    .page-header h1 { font-family: "Nanum Myeongjo", serif; font-size: 20px; }
+    .page-header p { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; }
+
+    main { max-width: 880px; margin: 0 auto; padding: 22px 16px 60px; }
+    .hint { font-size: 13px; color: var(--gray); text-align: center; margin-bottom: 20px; line-height: 1.7; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .qr-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px; text-align: center; box-shadow: 0 2px 12px rgba(26,58,107,0.08);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .qr-no { font-family: "Nanum Myeongjo", serif; font-weight: 800; color: var(--gold); font-size: 14px; }
+    .qr-card img { width: 160px; height: 160px; border: 1px solid #eee; border-radius: 8px; }
+    .qr-ref { font-weight: 700; color: var(--navy); font-size: 15px; }
+    .qr-title { font-size: 12px; color: var(--gray); line-height: 1.4; min-height: 32px; }
+    .qr-status { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
+    .ready { color: #1e8449; background: #eafaf1; }
+    .pending { color: #b9770e; background: #fef5e3; }
+    .qr-go {
+      display: inline-block; margin-top: 2px; font-size: 12px; font-weight: 700;
+      color: #fff; background: var(--navy); text-decoration: none;
+      padding: 7px 14px; border-radius: 8px;
+    }
+    .qr-go:hover { background: #16315c; }
+    .loading, .error { text-align: center; padding: 40px; color: var(--gray); }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>설교 QR 테스트</h1>
+    <p>제자양육부 신앙운동팀</p>
+  </div>
+
+  <main>
+    <p class="hint">
+      각 QR을 휴대폰 카메라로 스캔하거나, 아래 <b>설교 보기</b> 버튼을 눌러 영상으로 잘 이동하는지 확인하세요.<br />
+      "준비중"은 시트에 영상 주소가 아직 비어 있는 회차입니다(주소를 넣으면 같은 QR이 바로 동작).
+    </p>
+    <div id="list" class="loading">불러오는 중…</div>
+  </main>
+
+  <script>
+    const DATA_URLS = [
+      "verses.json",
+      "https://script.google.com/macros/s/AKfycbzO4GDAy0hJBbZ-L3hVuZQI4cqnjiZdy2afUujnxmmAr8NAh1lJURhrfT37PaFanPR4PA/exec",
+    ];
+    const GO_BASE = "go/?no=";
+
+    (async function () {
+      const listEl = document.getElementById("list");
+      let verses = null;
+      for (const url of DATA_URLS) {
+        try {
+          const res = await fetch(url, { cache: "no-cache" });
+          const data = await res.json();
+          if (data.verses && data.verses.length) { verses = data.verses; break; }
+        } catch (e) { /* 폴백 */ }
+      }
+      if (!verses) {
+        listEl.className = "error";
+        listEl.textContent = "데이터를 불러오지 못했습니다.";
+        return;
+      }
+
+      verses.sort((a, b) => a.no - b.no);
+      listEl.className = "grid";
+      listEl.innerHTML = verses
+        .map((v) => {
+          const nn = String(v.no).padStart(2, "0");
+          const ready = !!v.url;
+          return `
+            <div class="qr-card">
+              <div class="qr-no">${nn}회차</div>
+              <img src="qr/qr-${nn}.png" alt="${v.refShort} QR" loading="lazy" />
+              <div class="qr-ref">${v.refShort}</div>
+              <div class="qr-title">${v.sermonTitle || ""}</div>
+              <span class="qr-status ${ready ? "ready" : "pending"}">${ready ? "✓ 등록됨" : "… 준비중"}</span>
+              <a class="qr-go" href="${GO_BASE}${v.no}" target="_blank" rel="noopener">설교 보기 →</a>
+            </div>`;
+        })
+        .join("");
+    })();
+  </script>
+</body>
+</html>
