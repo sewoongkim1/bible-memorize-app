@@ -79,11 +79,15 @@ h1 {
 
 .error { color: var(--error); }
 
-/* 본문 상단 제목(헤더의 tagline-main과 구분, 가운데 정렬) */
-#app .tagline-main {
+/* 본문 상단 제목 (가운데 정렬) */
+.page-title {
   display: block;
   text-align: center;
-  font-size: 12.8px; /* 기존 16px의 0.8배 */
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 12.8px;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.3px;
   margin-bottom: 20px;
 }
 
