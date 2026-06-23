@@ -107,7 +107,7 @@
         const ready = !!(v && v.url); // 매핑 URL이 있어야 등록됨
         html += `
           <div class="qr-card">
-            <div class="qr-no">${nn}회차 <span class="qr-date">${weekDate(no, anchor)}</span></div>
+            <div class="qr-no">${nn}회차 <span class="qr-date">(${weekDate(no, anchor)})</span></div>
             <img src="qr/qr-${nn}.png" alt="${nn}회차 QR" loading="lazy" />
             <div class="qr-ref">${v ? v.refShort : "—"}</div>
             <div class="qr-title">${(v && v.sermonTitle) || ""}</div>
