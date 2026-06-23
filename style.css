@@ -83,6 +83,7 @@ h1 {
 #app .tagline-main {
   display: block;
   text-align: center;
+  font-size: 12.8px; /* 기존 16px의 0.8배 */
   margin-bottom: 20px;
 }
 
