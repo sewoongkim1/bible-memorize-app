@@ -1,22 +1,100 @@
+/* ============================================================
+   말씀 한 절 암송 테스트 — 등록 시스템과 동일한 톤
+   ============================================================ */
+:root {
+  --navy: #1a3a6b;
+  --navy-dark: #0d1b3e;
+  --gold: #c8a84b;
+  --cream: #fdf8f0;
+  --white: #ffffff;
+  --gray: #6b7280;
+  --light: #f3f0ea;
+  --border: #ddd6c8;
+  --green: #2c5f2d;
+  --error: #c0392b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  font-family: "맑은 고딕", sans-serif;
-  background: #fff;
-  margin: 0;
-  padding: 24px;
+  font-family: "Noto Sans KR", sans-serif;
+  background: var(--cream);
+  color: #222;
+  min-height: 100vh;
+}
+
+/* ---------- 브랜드 헤더 ---------- */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6b 40%, #0d4a7a 100%);
+  padding: 12px 20px 16px;
+  width: 100%;
+}
+.logo-wrap {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 16px 28px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  width: 100%;
+  max-width: 480px;
+}
+.logo-wrap img { width: 50px; height: auto; display: block; flex-shrink: 0; }
+.logo-tagline { display: flex; flex-direction: column; gap: 2px; }
+.logo-tagline .tagline-main {
+  font-size: 16px; font-weight: 800; color: #0d1b3e;
+  letter-spacing: -0.3px; line-height: 1.3;
+}
+.logo-tagline .tagline-sub {
+  font-size: 12px; font-weight: 500; color: #1a5276; letter-spacing: 0.5px;
+}
+.hero-subtitle {
+  font-size: 13px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.65); letter-spacing: 3px;
+}
+
+/* ---------- 본문 래퍼 ---------- */
+#app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 22px 16px 60px;
 }
 
 h1 {
-  font-size: 20px;
-  color: #1a1a1a;
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: -0.3px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+h1::before, h1::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
 }
 
+.error { color: var(--error); }
+
+/* ---------- 화면 1: 구절 목록 ---------- */
 .verse-grid {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 720px;
-  margin: 0 auto;
 }
 
 /* 가로로 긴 카드(한 줄 = 한 구절) */
@@ -25,28 +103,44 @@ h1 {
   display: flex;
   align-items: center;
   gap: 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 14px 18px;
-  text-align: left;
   cursor: pointer;
-  transition: background 0.15s;
+  box-shadow: 0 2px 12px rgba(26, 58, 107, 0.08);
+  transition: transform 0.12s, box-shadow 0.12s;
 }
-
 .verse-card:hover {
-  background: #f5f5f5;
-}
-
-/* 진행 상태별 카드 강조 */
-.verse-card.status-s1 {
-  border-color: #c9d2f0;
-}
-.verse-card.status-s2 {
-  border-color: #9fb0e6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(26, 58, 107, 0.14);
 }
 .verse-card.status-done {
-  border-color: #2c5f2d;
-  background: #f3f9f3;
+  border-color: var(--gold);
+  background: #fffdf6;
+}
+
+.verse-no {
+  font-family: "Nanum Myeongjo", serif;
+  color: var(--gold);
+  font-size: 15px;
+  font-weight: 800;
+  min-width: 30px;
+  text-align: center;
+}
+.verse-ref {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.verse-hint {
+  flex: 1;
+  color: var(--gray);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 진행 상태 배지 */
@@ -54,242 +148,82 @@ h1 {
   flex-shrink: 0;
   margin-left: auto;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 3px 10px;
-  border-radius: 10px;
-  display: inline-block;
-  white-space: nowrap;
-}
-.verse-status.status-none {
-  color: #9e9e9e;
-  background: #f0f0f0;
-}
-.verse-status.status-s1 {
-  color: #3a4aa0;
-  background: #eef0fa;
-}
-.verse-status.status-s2 {
-  color: #1e2761;
-  background: #dfe4f7;
-}
-.verse-status.status-done {
-  color: #2c5f2d;
-  background: #dcefdc;
-}
-
-.verse-no {
-  color: #6b6b6b;
-  font-size: 13px;
-  font-weight: bold;
-  min-width: 28px;
-  text-align: center;
-}
-
-.verse-ref {
-  font-weight: bold;
-  font-size: 15px;
-  white-space: nowrap;
-}
-
-.verse-hint {
-  flex: 1;
-  color: #888;
-  font-size: 13px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.error {
-  color: #b5302f;
-}
-
-.test-card {
-  max-width: 480px;
-  margin: 40px auto;
-  padding: 24px;
-  border: 1px solid #ddd;
   border-radius: 12px;
+  white-space: nowrap;
 }
+.verse-status.status-none { color: var(--gray); background: var(--light); }
+.verse-status.status-s1 { color: var(--navy); background: #e7ecf5; }
+.verse-status.status-s2 { color: var(--white); background: var(--navy); }
+.verse-status.status-done { color: var(--navy-dark); background: #f4e3ad; }
 
-.test-ref {
-  font-weight: bold;
-  color: #1a1a1a;
-  margin-bottom: 16px;
-}
-
-.test-sentence {
-  font-size: 18px;
-  line-height: 2;
-  margin-bottom: 20px;
-}
-
-/* 정답 보기 버튼 */
-.answer-btn {
-  background: none;
-  border: 1px solid #c9d2f0;
-  color: #1e2761;
-  padding: 7px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.answer-btn:hover {
-  background: #eef0fa;
-}
-
-/* 정답 패널 */
-.answer-panel {
-  margin-top: 14px;
-  padding: 16px;
-  background: #f7f8fc;
-  border: 1px solid #dfe4f7;
-  border-radius: 8px;
-}
-.answer-panel[hidden] {
-  display: none;
-}
-.answer-title {
-  font-size: 12px;
-  font-weight: bold;
-  color: #1e2761;
-  margin-bottom: 8px;
-}
-.answer-text {
-  font-size: 17px;
-  line-height: 1.9;
-  color: #1a1a1a;
-}
-.answer-text .ans-word {
-  color: #2c5f2d;
-  background: #e3f1e3;
-  border-radius: 3px;
-  padding: 0 2px;
-}
-.back-to-test-btn {
-  margin-top: 14px;
-  background: #1e2761;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.back-to-test-btn:hover {
-  background: #2a3580;
-}
-
-.word-fixed {
-  margin-right: 4px;
-}
-
-.word-input {
-  text-align: center;
-  font-size: 18px;
-  min-width: 2.5em;
-  margin: 0 3px;
-  padding: 0 2px;
-  border: none;
-  border-bottom: 2px solid #6b6b6b;
-  outline: none;
-  font-family: inherit;
-}
-
-.word-input:focus {
-  border-bottom-color: #1e2761;
-}
-
-.word-input.correct {
-  border-bottom-color: #2c5f2d;
-  color: #2c5f2d;
-}
-
-.word-input.wrong {
-  border-bottom-color: #b5302f;
-  color: #b5302f;
-}
-
-.submit-btn {
-  background: #1e2761;
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.submit-btn:hover {
-  background: #2a3580;
-}
-
+/* ---------- 화면 2: 테스트 ---------- */
 .back-btn {
   background: none;
   border: none;
-  color: #6b6b6b;
+  color: var(--gray);
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-size: 13px;
+  font-family: inherit;
 }
+.back-btn:hover { color: var(--navy); }
 
-.result-score {
-  font-size: 32px;
-  font-weight: bold;
-  color: #1a1a1a;
-  margin-top: 20px;
-}
-
-.result-label {
-  color: #6b6b6b;
+.test-card {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(26, 58, 107, 0.08);
 }
 
 .test-stage {
   display: inline-block;
-  background: #eef0fa;
-  color: #1e2761;
+  background: var(--navy);
+  color: var(--white);
   font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-bottom: 8px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
 }
-
-.result-actions {
-  margin-top: 12px;
+.test-ref {
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--navy);
+  margin-bottom: 16px;
 }
+.test-sentence {
+  font-size: 18px;
+  line-height: 2;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+.word-fixed { margin-right: 4px; }
 
-.next-btn {
-  background: #2c5f2d;
-  color: white;
+.word-input {
+  text-align: center;
+  font-size: 18px;
+  font-family: inherit;
+  min-width: 2.5em;
+  margin: 0 3px;
+  padding: 0 2px;
   border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  cursor: pointer;
+  border-bottom: 2px solid var(--border);
+  outline: none;
+  background: transparent;
+  color: #222;
 }
-
-.complete-badge {
-  display: inline-block;
-  background: #2c5f2d;
-  color: #fff;
-  font-weight: bold;
-  font-size: 15px;
-  padding: 8px 18px;
-  border-radius: 20px;
-  margin-bottom: 12px;
-}
-
-.sermon-link {
-  display: block;
-  margin-top: 8px;
-  color: #1e2761;
-  font-size: 13px;
-  text-decoration: none;
-}
-.sermon-link:hover {
-  text-decoration: underline;
-}
-
+.word-input:focus { border-bottom-color: var(--navy); }
+.word-input.correct { border-bottom-color: var(--green); color: var(--green); }
 .word-input.wrong {
+  border-bottom-color: var(--error);
+  color: var(--error);
   animation: shake 0.2s;
 }
 
@@ -298,3 +232,104 @@ h1 {
   25% { transform: translateX(-3px); }
   75% { transform: translateX(3px); }
 }
+
+/* ---------- 정답 보기 ---------- */
+.answer-btn {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  color: var(--navy);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+}
+.answer-btn:hover { border-color: var(--navy); }
+
+.answer-panel {
+  margin-top: 14px;
+  padding: 16px;
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.answer-panel[hidden] { display: none; }
+.answer-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.answer-text {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #1a1a1a;
+}
+.answer-text .ans-word {
+  color: var(--navy);
+  background: #f4e3ad;
+  border-radius: 3px;
+  padding: 0 3px;
+  font-weight: 700;
+}
+.back-to-test-btn {
+  margin-top: 14px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.back-to-test-btn:hover { background: #16315c; }
+
+/* ---------- 결과 ---------- */
+#result-area { margin-top: 4px; }
+.result-score {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-top: 20px;
+}
+.result-label { color: var(--gray); margin-top: 2px; }
+.result-actions { margin-top: 14px; }
+
+.next-btn {
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.next-btn:hover { background: #16315c; }
+
+.complete-badge {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 16px;
+  padding: 9px 20px;
+  border-radius: 24px;
+  margin-bottom: 12px;
+  font-family: "Nanum Myeongjo", serif;
+}
+.sermon-link {
+  display: block;
+  margin-top: 8px;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.sermon-link:hover { text-decoration: underline; }

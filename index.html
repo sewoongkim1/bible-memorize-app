@@ -3,16 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>성경 암송 테스트</title>
+  <title>말씀 한 절 암송 테스트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app">
+  <!-- 등록 시스템과 동일한 브랜드 헤더 -->
+  <div class="page-header">
+    <div class="logo-wrap">
+      <img src="https://sewoongkim1.github.io/summer-bible/logo3.png" alt="고척교회 로고" />
+      <div class="logo-tagline">
+        <span class="tagline-main">오직 성경, 말씀이 답이다!</span>
+        <span class="tagline-sub">주의 말씀은 내 발에 등이요</span>
+        <span class="tagline-sub">내 길에 빛이니이다.</span>
+        <span class="tagline-sub">시편 119편 105절</span>
+      </div>
+    </div>
+    <p class="hero-subtitle">제자양육부 신앙운동팀</p>
+  </div>
+
+  <main id="app">
     <h1>말씀 한 절 암송 테스트</h1>
     <div id="verse-list" class="verse-grid">
       <!-- 구절 카드들이 여기 렌더링됨 -->
     </div>
-  </div>
+  </main>
 
   <script src="app.js"></script>
 </body>
