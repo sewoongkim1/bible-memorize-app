@@ -79,6 +79,13 @@ h1 {
 
 .error { color: var(--error); }
 
+/* 본문 상단 제목(헤더의 tagline-main과 구분, 가운데 정렬) */
+#app .tagline-main {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 /* ---------- 화면 1: 구절 목록 ---------- */
 .verse-grid {
   display: flex;
