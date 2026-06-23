@@ -79,6 +79,24 @@ h1 {
 
 .error { color: var(--error); }
 
+/* 메인 화면 '알림 구독' 버튼 */
+.remind-cta {
+  display: block;
+  max-width: 340px;
+  margin: 0 auto 18px;
+  text-align: center;
+  background: #eef1f8;
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 11px 16px;
+  border-radius: 22px;
+  font-size: 14px;
+  transition: background 0.15s, color 0.15s;
+}
+.remind-cta:hover { background: var(--navy); color: #fff; }
+
 /* 본문 상단 제목 (가운데 정렬) */
 .page-title {
   display: block;

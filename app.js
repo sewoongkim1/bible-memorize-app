@@ -102,6 +102,7 @@ function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
     <span class="page-title">오직 성경(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
+    <a class="remind-cta" href="reminders.html">🔔 매일 암송 구절 알림 받기</a>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
