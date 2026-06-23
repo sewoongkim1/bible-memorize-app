@@ -179,9 +179,12 @@ h1 {
 }
 .back-btn:hover { background: var(--navy); color: var(--white); }
 
-.test-card {
+.test-screen {
   max-width: 480px;
   margin: 0 auto;
+}
+
+.test-card {
   padding: 24px;
   background: var(--white);
   border: 1px solid var(--border);

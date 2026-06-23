@@ -179,19 +179,21 @@ function renderTestScreen(verse, stage) {
     : "";
 
   appEl.innerHTML = `
-    <button class="back-btn" id="back-to-list-btn">← 목록</button>
-    <div class="test-card">
-      <div class="test-stage">${stage}단계</div>
-      <div class="test-ref">${verse.refShort}</div>
-      <div class="test-sentence">${wordsHtml}</div>
-      <button class="answer-btn" id="show-answer-btn">정답 보기</button>
-      <div id="answer-panel" class="answer-panel" hidden>
-        <div class="answer-title">정답</div>
-        <div class="answer-text">${answerHtml}</div>
-        <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
+    <div class="test-screen">
+      <button class="back-btn" id="back-to-list-btn">← 목록</button>
+      <div class="test-card">
+        <div class="test-stage">${stage}단계</div>
+        <div class="test-ref">${verse.refShort}</div>
+        <div class="test-sentence">${wordsHtml}</div>
+        <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+        <div id="answer-panel" class="answer-panel" hidden>
+          <div class="answer-title">정답</div>
+          <div class="answer-text">${answerHtml}</div>
+          <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
+        </div>
+        <div id="result-area"></div>
+        ${sermonBanner}
       </div>
-      <div id="result-area"></div>
-      ${sermonBanner}
     </div>
   `;
 
