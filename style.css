@@ -180,6 +180,35 @@ h1::before, h1::after {
   box-shadow: 0 2px 12px rgba(26, 58, 107, 0.08);
 }
 
+/* 단계 위 설교 영상 링크 */
+.sermon-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6b 100%);
+  color: var(--white);
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.sermon-banner:hover { filter: brightness(1.1); }
+.sermon-banner-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy-dark);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sermon-banner-text { display: flex; flex-direction: column; gap: 1px; line-height: 1.35; }
+.sermon-banner-title { font-size: 14px; font-weight: 700; }
+.sermon-banner-pastor { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
+
 .test-stage {
   display: inline-block;
   background: var(--navy);

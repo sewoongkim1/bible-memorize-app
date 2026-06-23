@@ -160,9 +160,21 @@ function renderTestScreen(verse, stage) {
     )
     .join(" ");
 
+  // 단계 위에 해당 구절의 설교 영상 링크를 배치
+  const sermonBanner = verse.url
+    ? `<a class="sermon-banner" href="${verse.url}" target="_blank" rel="noopener">
+         <span class="sermon-banner-icon">▶</span>
+         <span class="sermon-banner-text">
+           <span class="sermon-banner-title">${verse.sermonTitle || "설교 영상 보기"}</span>
+           ${verse.pastor ? `<span class="sermon-banner-pastor">${verse.pastor}</span>` : ""}
+         </span>
+       </a>`
+    : "";
+
   appEl.innerHTML = `
     <button class="back-btn" id="back-to-list-btn">← 목록</button>
     <div class="test-card">
+      ${sermonBanner}
       <div class="test-stage">${stage}단계</div>
       <div class="test-ref">${verse.refShort}</div>
       <div class="test-sentence">${wordsHtml}</div>
