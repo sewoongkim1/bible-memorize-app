@@ -185,7 +185,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--white);
+  background: #eef1f8; /* 옅은 네이비 톤 */
   border: 1.5px solid var(--navy);
   color: var(--navy);
   font-weight: 700;
