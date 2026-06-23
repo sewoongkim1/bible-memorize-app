@@ -69,23 +69,12 @@ body {
 
 h1 {
   font-family: "Nanum Myeongjo", serif;
-  font-size: 10.8px; /* 기존 18px의 0.6배 */
+  font-size: 12.6px; /* 기존 18px의 0.7배 */
   font-weight: 800;
   color: var(--navy);
   text-align: center;
   letter-spacing: -0.3px;
   margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-h1::before, h1::after {
-  content: "";
-  width: 18px;
-  height: 2px;
-  background: var(--gold);
-  border-radius: 2px;
 }
 
 .error { color: var(--error); }
