@@ -229,8 +229,10 @@ h1 {
   margin-bottom: 16px;
 }
 .test-sentence {
-  font-size: 18px;
-  line-height: 2;
+  font-family: "Gowun Batang", serif;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 2.1;
   margin-bottom: 20px;
   color: #1a1a1a;
 }
@@ -238,8 +240,9 @@ h1 {
 
 .word-input {
   text-align: center;
-  font-size: 18px;
-  font-family: inherit;
+  font-family: "Gowun Batang", serif;
+  font-weight: 700;
+  font-size: 19px;
   min-width: 2.5em;
   margin: 0 3px;
   padding: 0 2px;
@@ -293,8 +296,10 @@ h1 {
   margin-bottom: 8px;
 }
 .answer-text {
-  font-size: 17px;
-  line-height: 1.9;
+  font-family: "Gowun Batang", serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.95;
   color: #1a1a1a;
 }
 .answer-text .ans-word {
