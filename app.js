@@ -153,12 +153,25 @@ function renderTestScreen(verse, stage) {
     })
     .join(" ");
 
+  // 정답 보기용: 빈칸이었던 단어는 강조해서 보여준다.
+  const answerHtml = tokens
+    .map((word, i) =>
+      blankFlags[i] ? `<strong class="ans-word">${word}</strong>` : word
+    )
+    .join(" ");
+
   appEl.innerHTML = `
     <button class="back-btn" id="back-to-list-btn">← 목록</button>
     <div class="test-card">
       <div class="test-stage">${stage}단계</div>
       <div class="test-ref">${verse.refShort}</div>
       <div class="test-sentence">${wordsHtml}</div>
+      <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+      <div id="answer-panel" class="answer-panel" hidden>
+        <div class="answer-title">정답</div>
+        <div class="answer-text">${answerHtml}</div>
+        <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
+      </div>
       <div id="result-area"></div>
     </div>
   `;
@@ -167,7 +180,28 @@ function renderTestScreen(verse, stage) {
     .getElementById("back-to-list-btn")
     .addEventListener("click", () => renderVerseList(verses));
 
+  setupAnswerToggle();
   setupAutoCheck(verse, stage);
+}
+
+// 정답 보기 / 돌아가기 토글. 입력하던 내용은 그대로 유지된다(재렌더 없음).
+function setupAnswerToggle() {
+  const showBtn = document.getElementById("show-answer-btn");
+  const backBtn = document.getElementById("back-to-test-btn");
+  const panel = document.getElementById("answer-panel");
+
+  showBtn.addEventListener("click", () => {
+    panel.hidden = false;
+    showBtn.hidden = true;
+  });
+
+  backBtn.addEventListener("click", () => {
+    panel.hidden = true;
+    showBtn.hidden = false;
+    // 아직 못 채운 빈칸으로 포커스를 돌려준다.
+    const next = document.querySelector(".word-input:not([disabled])");
+    if (next) next.focus();
+  });
 }
 
 // 본문 토큰 중 빈칸으로 만들 인덱스를 고른다.

@@ -124,6 +124,62 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* 정답 보기 버튼 */
+.answer-btn {
+  background: none;
+  border: 1px solid #c9d2f0;
+  color: #1e2761;
+  padding: 7px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.answer-btn:hover {
+  background: #eef0fa;
+}
+
+/* 정답 패널 */
+.answer-panel {
+  margin-top: 14px;
+  padding: 16px;
+  background: #f7f8fc;
+  border: 1px solid #dfe4f7;
+  border-radius: 8px;
+}
+.answer-panel[hidden] {
+  display: none;
+}
+.answer-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1e2761;
+  margin-bottom: 8px;
+}
+.answer-text {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #1a1a1a;
+}
+.answer-text .ans-word {
+  color: #2c5f2d;
+  background: #e3f1e3;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+.back-to-test-btn {
+  margin-top: 14px;
+  background: #1e2761;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.back-to-test-btn:hover {
+  background: #2a3580;
+}
+
 .word-fixed {
   margin-right: 4px;
 }
