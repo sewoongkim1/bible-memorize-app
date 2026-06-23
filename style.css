@@ -69,7 +69,7 @@ body {
 
 h1 {
   font-family: "Nanum Myeongjo", serif;
-  font-size: 18px;
+  font-size: 10.8px; /* 기존 18px의 0.6배 */
   font-weight: 800;
   color: var(--navy);
   text-align: center;
