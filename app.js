@@ -166,7 +166,6 @@ function renderTestScreen(verse, stage) {
          <span class="sermon-banner-icon">▶</span>
          <span class="sermon-banner-text">
            <span class="sermon-banner-title">${verse.sermonTitle || "설교 영상 보기"}</span>
-           ${verse.pastor ? `<span class="sermon-banner-pastor">${verse.pastor}</span>` : ""}
          </span>
        </a>`
     : "";
