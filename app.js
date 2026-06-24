@@ -192,7 +192,7 @@ function renderTestScreen(verse, stage) {
         <div class="test-sentence">${wordsHtml}</div>
         <div class="btn-row">
           <button class="answer-btn" id="show-answer-btn">정답 보기</button>
-          <button class="voice-btn" id="voice-btn">🎤 음성으로 암송</button>
+          <button class="voice-btn" id="voice-btn">🎤 음성 암송 시작</button>
         </div>
         <div id="result-area"></div>
         <div id="answer-panel" class="answer-panel" hidden>
@@ -204,7 +204,7 @@ function renderTestScreen(verse, stage) {
         <div id="voice-panel" class="voice-panel" hidden>
           <div class="voice-status" id="voice-status">🎙️ 듣고 있어요… 구절을 또박또박 말해보세요</div>
           <div class="voice-live" id="voice-live"></div>
-          <button class="voice-stop" id="voice-stop">■ 멈추고 채점</button>
+          <button class="voice-stop" id="voice-stop">■ 암송 종료</button>
         </div>
         <div id="voice-result" class="voice-result"></div>
 
@@ -332,7 +332,7 @@ function setupVoice(verse) {
       <div class="voice-label">${passed ? "음성 암송 통과! 🎉" : `조금 더! (통과 ${VOICE_PASS}%)`}</div>
       <div class="voice-words">${wordsHtml}</div>
       <div class="voice-heard">들린 내용: ${finalText ? finalText : "(인식 안 됨)"}</div>
-      <button class="voice-btn" id="voice-retry">🎤 다시 말하기</button>
+      <button class="voice-btn" id="voice-retry">🎤 다시 암송</button>
     `;
     document.getElementById("voice-retry").addEventListener("click", startListening);
   }
