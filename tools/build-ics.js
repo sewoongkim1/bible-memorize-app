@@ -7,7 +7,7 @@ const REMIND_HOUR = 7;   // 매일 알림 시각 (현지 시간, 0~23)
 const REMIND_MIN = 0;    // 분
 const DAYS_PER_WEEK = 7; // 한 주에 며칠 알림 (7=매일, 1=일요일만)
 const DURATION_MIN = 15; // 일정 길이(분)
-const TOTAL_WEEKS = 52;  // 전체 주차 (구절 미등록 주는 일반 알림으로 채움)
+const TOTAL_WEEKS = 52;  // 전체 주차 (말씀 미등록 주는 일반 알림으로 채움)
 // =========================================
 
 const APP_URL = "https://sewoongkim1.github.io/bible-memorize-app/";
@@ -56,7 +56,7 @@ const lines = [
   "PRODID:-//고척교회 제자양육부//말씀 암송 리마인드//KO",
   "CALSCALE:GREGORIAN",
   "METHOD:PUBLISH",
-  "X-WR-CALNAME:말씀 한 절 암송 리마인드",
+  "X-WR-CALNAME:오직 성경, 말씀이 답이다!",
   "X-WR-TIMEZONE:Asia/Seoul",
   "REFRESH-INTERVAL;VALUE=DURATION:P1D",
   "X-PUBLISHED-TTL:P1D",
@@ -69,7 +69,7 @@ for (let no = 1; no <= TOTAL_WEEKS; no++) {
   const day = ymd(no);
   let summary, desc;
   if (v && v.text) {
-    // 구절 등록된 주 → 실제 구절
+    // 말씀 등록된 주 → 실제 말씀
     real++;
     summary = esc(`📖 ${v.sermonTitle || "오늘의 암송"} (${v.refShort})`);
     desc = esc(
@@ -78,10 +78,10 @@ for (let no = 1; no <= TOTAL_WEEKS; no++) {
         `📝 암송 테스트: ${APP_URL}`
     );
   } else {
-    // 미등록 주 → 일반 알림 (구절 등록되면 다음 갱신 때 자동 교체)
+    // 미등록 주 → 일반 알림 (말씀 등록되면 다음 갱신 때 자동 교체)
     placeholder++;
-    summary = esc(`📖 이번 주 암송 구절을 확인하세요`);
-    desc = esc(`이번 주 암송 구절을 확인하고 암송해 보세요.\n\n암송 테스트: ${APP_URL}`);
+    summary = esc(`📖 이번 주 암송 말씀을 확인하세요`);
+    desc = esc(`이번 주 암송 말씀을 확인하고 암송해 보세요.\n\n암송 테스트: ${APP_URL}`);
   }
   lines.push(
     "BEGIN:VEVENT",
@@ -95,7 +95,7 @@ for (let no = 1; no <= TOTAL_WEEKS; no++) {
     `DESCRIPTION:${desc}`,
     "BEGIN:VALARM",
     "ACTION:DISPLAY",
-    "DESCRIPTION:오늘의 암송 구절",
+    "DESCRIPTION:이번 주 암송 말씀",
     "TRIGGER:-PT0M",
     "END:VALARM",
     "END:VEVENT"
@@ -104,4 +104,4 @@ for (let no = 1; no <= TOTAL_WEEKS; no++) {
 lines.push("END:VCALENDAR");
 
 fs.writeFileSync("reminders.ics", lines.join("\r\n") + "\r\n");
-console.log(`reminders.ics 생성: 총 ${TOTAL_WEEKS}주 (실제 구절 ${real}주 + 일반 알림 ${placeholder}주)`);
+console.log(`reminders.ics 생성: 총 ${TOTAL_WEEKS}주 (실제 말씀 ${real}주 + 일반 알림 ${placeholder}주)`);
