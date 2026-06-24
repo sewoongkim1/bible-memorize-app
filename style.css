@@ -190,12 +190,17 @@ h1 {
   gap: 10px;
 }
 
-/* 정답 보기 / 다음 단계 버튼을 한 줄에 (왼쪽: 다음 단계, 오른쪽: 정답 보기) */
-.action-row {
+/* 정답 보기 + 음성 암송 버튼을 한 줄에 */
+.btn-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-row .answer-btn,
+.btn-row .voice-btn {
+  margin-top: 0;
 }
 
 .back-btn,
@@ -410,7 +415,8 @@ h1 {
 .voice-msg { font-size: 13px; color: var(--gray); line-height: 1.7; margin-top: 12px; }
 
 /* ---------- 결과 ---------- */
-#result-area { margin-top: 4px; }
+#result-area { margin-top: 14px; text-align: center; }
+#result-area:empty { display: none; }
 .result-score {
   font-family: "Nanum Myeongjo", serif;
   font-size: 34px;

@@ -190,17 +190,17 @@ function renderTestScreen(verse, stage) {
           <button class="back-btn" id="back-to-list-btn">← 목록</button>
         </div>
         <div class="test-sentence">${wordsHtml}</div>
-        <div class="action-row">
-          <div id="result-area"></div>
+        <div class="btn-row">
           <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+          <button class="voice-btn" id="voice-btn">🎤 음성으로 암송</button>
         </div>
+        <div id="result-area"></div>
         <div id="answer-panel" class="answer-panel" hidden>
           <div class="answer-title">정답</div>
           <div class="answer-text">${answerHtml}</div>
           <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
         </div>
 
-        <button class="voice-btn" id="voice-btn">🎤 음성으로 암송</button>
         <div id="voice-panel" class="voice-panel" hidden>
           <div class="voice-status" id="voice-status">🎙️ 듣고 있어요… 구절을 또박또박 말해보세요</div>
           <div class="voice-live" id="voice-live"></div>
