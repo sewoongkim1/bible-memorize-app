@@ -7,11 +7,14 @@ const REMIND_HOUR = 7;   // 매일 알림 시각 (현지 시간, 0~23)
 const REMIND_MIN = 0;    // 분
 const DAYS_PER_WEEK = 7; // 한 주에 며칠 알림 (7=매일, 1=일요일만)
 const DURATION_MIN = 15; // 일정 길이(분)
+const TOTAL_WEEKS = 52;  // 전체 주차 (구절 미등록 주는 일반 알림으로 채움)
 // =========================================
 
 const APP_URL = "https://sewoongkim1.github.io/bible-memorize-app/";
 const data = JSON.parse(fs.readFileSync("verses.json", "utf8"));
 const verses = (data.verses || []).slice().sort((a, b) => a.no - b.no);
+const byNo = {};
+verses.forEach((v) => (byNo[v.no] = v));
 
 // 1회차 일요일(KST) 기준일 구하기
 function kstParts(iso) {
@@ -59,16 +62,26 @@ const lines = [
   "X-PUBLISHED-TTL:P1D",
 ];
 
-for (const v of verses) {
-  if (!v.text) continue; // 본문 없는 회차는 건너뜀
-  const day = ymd(v.no);
-  const summary = esc(`📖 오늘의 암송 (${v.refShort})`);
-  const desc = esc(
-    `${v.text}\n\n— ${v.refFull || v.refShort}\n암송 테스트: ${APP_URL}`
-  );
+let real = 0;
+let placeholder = 0;
+for (let no = 1; no <= TOTAL_WEEKS; no++) {
+  const v = byNo[no];
+  const day = ymd(no);
+  let summary, desc;
+  if (v && v.text) {
+    // 구절 등록된 주 → 실제 구절
+    real++;
+    summary = esc(`📖 오늘의 암송 (${v.refShort})`);
+    desc = esc(`${v.text}\n\n— ${v.refFull || v.refShort}\n암송 테스트: ${APP_URL}`);
+  } else {
+    // 미등록 주 → 일반 알림 (구절 등록되면 다음 갱신 때 자동 교체)
+    placeholder++;
+    summary = esc(`📖 이번 주 암송 구절을 확인하세요`);
+    desc = esc(`이번 주 암송 구절을 확인하고 암송해 보세요.\n\n암송 테스트: ${APP_URL}`);
+  }
   lines.push(
     "BEGIN:VEVENT",
-    `UID:week-${v.no}@bible-memorize-app`,
+    `UID:week-${no}@bible-memorize-app`,
     "DTSTAMP:20260101T000000Z",
     // 부동(floating) 로컬 시간 → 사용자 폰의 현지 시간 기준으로 표시
     `DTSTART:${day}T${start}`,
@@ -87,4 +100,4 @@ for (const v of verses) {
 lines.push("END:VCALENDAR");
 
 fs.writeFileSync("reminders.ics", lines.join("\r\n") + "\r\n");
-console.log(`reminders.ics 생성: ${verses.filter((v) => v.text).length}주`);
+console.log(`reminders.ics 생성: 총 ${TOTAL_WEEKS}주 (실제 구절 ${real}주 + 일반 알림 ${placeholder}주)`);
