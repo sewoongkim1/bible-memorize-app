@@ -71,7 +71,7 @@ for (let no = 1; no <= TOTAL_WEEKS; no++) {
   if (v && v.text) {
     // 구절 등록된 주 → 실제 구절
     real++;
-    summary = esc(`📖 오직 성경, 말씀이 답이다! (${v.refShort})`);
+    summary = esc(`📖 ${v.sermonTitle || "오늘의 암송"} (${v.refShort})`);
     desc = esc(
       `${v.text}\n\n— ${v.refFull || v.refShort}\n` +
         `📺 설교 영상: ${APP_URL}go/?no=${no}\n` +
