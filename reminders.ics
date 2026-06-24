@@ -13,7 +13,7 @@ DTSTAMP:20260101T000000Z
 DTSTART:20260104T070000
 DTEND:20260104T071500
 RRULE:FREQ=DAILY;COUNT=7
-SUMMARY:📖 오직 성경\, 말씀이 답이다! (시 119:105)
+SUMMARY:📖 오직 성경, 말씀이 답이다! (시 119:105)
 DESCRIPTION:주의 말씀은 내 발의 등이요 내 길에 빛이니이다\n\n— 시편 119편 105절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=1\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -56,7 +56,7 @@ DTSTART:20260125T070000
 DTEND:20260125T071500
 RRULE:FREQ=DAILY;COUNT=7
 SUMMARY:📖 믿고 가는 길 (출 13:22)
-DESCRIPTION:낮에는 구름기둥\, 밤에는 불기둥이 백성 앞에서 떠나지 아니하리라\n\n— 출애굽기 13장 22절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=4\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
+DESCRIPTION:낮에는 구름기둥, 밤에는 불기둥이 백성 앞에서 떠나지 아니하리라\n\n— 출애굽기 13장 22절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=4\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:이번 주 암송 말씀
@@ -140,7 +140,7 @@ DTSTART:20260308T070000
 DTEND:20260308T071500
 RRULE:FREQ=DAILY;COUNT=7
 SUMMARY:📖 아름다운 엉망진창 (막 12:17)
-DESCRIPTION:가이사의 것은 가이사에게\, 하나님의 것은 하나님께 바치라\n\n— 마가복음 12장 17절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=10\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
+DESCRIPTION:가이사의 것은 가이사에게, 하나님의 것은 하나님께 바치라\n\n— 마가복음 12장 17절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=10\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:이번 주 암송 말씀
@@ -195,7 +195,7 @@ DTSTAMP:20260101T000000Z
 DTSTART:20260405T070000
 DTEND:20260405T071500
 RRULE:FREQ=DAILY;COUNT=7
-SUMMARY:📖 빈 손\, 빈 무덤 (막 16:6)
+SUMMARY:📖 빈 손, 빈 무덤 (막 16:6)
 DESCRIPTION:너희가 십자가에 못 박히신 나사렛 예수를 찾는구나 그가 살아나셨고 여기 계시지 아니하니라\n\n— 마가복음 16장 6절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=14\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -223,7 +223,7 @@ DTSTAMP:20260101T000000Z
 DTSTART:20260419T070000
 DTEND:20260419T071500
 RRULE:FREQ=DAILY;COUNT=7
-SUMMARY:📖 으른입니까\, 어른입니까? (삼상 26:24)
+SUMMARY:📖 으른입니까, 어른입니까? (삼상 26:24)
 DESCRIPTION:오늘 왕의 생명을 내가 중히 여긴 것 같이 내 생명을 여호와께서 중히 여기셔서 모든 환란에서 나를 구하여 내시기를 바라나이다\n\n— 사무엘상 26장 24절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=16\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY

@@ -41,8 +41,10 @@ function ymd(no) {
   return `${y}${m}${day}`;
 }
 function esc(s) {
+  // 백슬래시·세미콜론·줄바꿈만 이스케이프. 쉼표(,)는 그대로 둔다.
+  // (표준은 \,지만 구글·애플 캘린더는 일반 쉼표도 정상 처리 → 파일도 깔끔하게)
   return String(s || "")
-    .replace(/[\\;,]/g, (m) => "\\" + m)
+    .replace(/[\\;]/g, (m) => "\\" + m)
     .replace(/\r?\n/g, "\\n");
 }
 const pad = (n) => String(n).padStart(2, "0");
