@@ -294,12 +294,24 @@ function setupVoice(verse) {
   const liveEl = document.getElementById("voice-live");
   const resultEl = document.getElementById("voice-result");
 
+  const ua = navigator.userAgent || "";
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    // 미지원 브라우저(주로 아이폰 일부): 버튼에 안내
+
+  // 카카오톡 내장 브라우저: 마이크·음성인식 차단 → 외부 브라우저 안내
+  if (/KAKAOTALK/i.test(ua)) {
     startBtn.addEventListener("click", () => {
       resultEl.innerHTML =
-        `<div class="voice-msg">이 브라우저는 음성인식을 지원하지 않습니다.<br>크롬(안드로이드·PC)에서 이용하거나 타이핑으로 암송해 주세요.</div>`;
+        `<div class="voice-msg">카카오톡 브라우저에서는 음성 암송이 동작하지 않습니다.<br>아래 버튼으로 크롬·사파리에서 열어 사용해 주세요.</div>
+         <a class="voice-btn" id="voice-ext" style="margin-top:10px;" href="kakaotalk://web/openExternal?url=${encodeURIComponent(location.href)}">🔗 외부 브라우저로 열기</a>`;
+    });
+    return;
+  }
+
+  if (!SR) {
+    // 미지원 브라우저(주로 아이폰 일부 / 네이버 등 인앱): 버튼에 안내
+    startBtn.addEventListener("click", () => {
+      resultEl.innerHTML =
+        `<div class="voice-msg">이 브라우저는 음성인식을 지원하지 않습니다.<br>크롬(안드로이드·PC)·사파리에서 이용하거나 타이핑으로 암송해 주세요.</div>`;
     });
     return;
   }
