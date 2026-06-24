@@ -199,6 +199,15 @@ function renderTestScreen(verse, stage) {
           <div class="answer-text">${answerHtml}</div>
           <button class="back-to-test-btn" id="back-to-test-btn">돌아가서 계속하기</button>
         </div>
+
+        <button class="voice-btn" id="voice-btn">🎤 음성으로 암송</button>
+        <div id="voice-panel" class="voice-panel" hidden>
+          <div class="voice-status" id="voice-status">🎙️ 듣고 있어요… 구절을 또박또박 말해보세요</div>
+          <div class="voice-live" id="voice-live"></div>
+          <button class="voice-stop" id="voice-stop">■ 멈추고 채점</button>
+        </div>
+        <div id="voice-result" class="voice-result"></div>
+
         ${sermonBanner}
       </div>
     </div>
@@ -210,6 +219,7 @@ function renderTestScreen(verse, stage) {
 
   setupAnswerToggle();
   setupAutoCheck(verse, stage);
+  setupVoice(verse);
 }
 
 // 정답 보기 / 돌아가기 토글. 입력하던 내용은 그대로 유지된다(재렌더 없음).
@@ -230,6 +240,133 @@ function setupAnswerToggle() {
     const next = document.querySelector(".word-input:not([disabled])");
     if (next) next.focus();
   });
+}
+
+// ------------------------------------------------------------
+// 음성 암송: 마이크로 구절을 말하면 본문과 비교해 정확도(%)를 매긴다.
+// 통과 기준: 단어 일치율 90% 이상 → 암송 완료(3단계)로 저장
+// ------------------------------------------------------------
+const VOICE_PASS = 90;
+
+// 채점용: 한글/영문/숫자만 남기고 단어 배열로
+function normalizeWords(s) {
+  return String(s || "")
+    .replace(/[^가-힣a-zA-Z0-9\s]/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+// 말한 내용과 정답 단어를 LCS(최장 공통 부분수열)로 맞춰
+// 맞은 단어 표시 + 정확도(%) 계산. (반복 단어가 있어도 정확히 정렬)
+function scoreSpoken(answerText, spokenText) {
+  const ans = normalizeWords(answerText);
+  const said = normalizeWords(spokenText);
+  const n = ans.length;
+  const m = said.length;
+  const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      dp[i][j] =
+        ans[i - 1] === said[j - 1]
+          ? dp[i - 1][j - 1] + 1
+          : Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  // 역추적: 정답 단어 중 LCS에 포함된(=맞은) 단어 표시
+  const marks = new Array(n).fill(false);
+  let i = n;
+  let j = m;
+  while (i > 0 && j > 0) {
+    if (ans[i - 1] === said[j - 1]) { marks[i - 1] = true; i--; j--; }
+    else if (dp[i - 1][j] >= dp[i][j - 1]) i--;
+    else j--;
+  }
+  const accuracy = n ? Math.round((dp[n][m] / n) * 100) : 0;
+  return { accuracy, marks, ansWords: ans };
+}
+
+function setupVoice(verse) {
+  const startBtn = document.getElementById("voice-btn");
+  const panel = document.getElementById("voice-panel");
+  const stopBtn = document.getElementById("voice-stop");
+  const statusEl = document.getElementById("voice-status");
+  const liveEl = document.getElementById("voice-live");
+  const resultEl = document.getElementById("voice-result");
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    // 미지원 브라우저(주로 아이폰 일부): 버튼에 안내
+    startBtn.addEventListener("click", () => {
+      resultEl.innerHTML =
+        `<div class="voice-msg">이 브라우저는 음성인식을 지원하지 않습니다.<br>크롬(안드로이드·PC)에서 이용하거나 타이핑으로 암송해 주세요.</div>`;
+    });
+    return;
+  }
+
+  let rec = null;
+  let finalText = "";
+
+  function evaluateAndShow() {
+    const { accuracy, marks, ansWords } = scoreSpoken(verse.text, finalText);
+    const wordsHtml = ansWords
+      .map((w, i) => `<span class="${marks[i] ? "v-ok" : "v-no"}">${w}</span>`)
+      .join(" ");
+    const passed = accuracy >= VOICE_PASS;
+    if (passed) saveProgress(verse.no, 3); // 전체 암송 성공 → 완료 저장
+
+    resultEl.innerHTML = `
+      <div class="voice-score ${passed ? "pass" : "fail"}">${accuracy}%</div>
+      <div class="voice-label">${passed ? "음성 암송 통과! 🎉" : `조금 더! (통과 ${VOICE_PASS}%)`}</div>
+      <div class="voice-words">${wordsHtml}</div>
+      <div class="voice-heard">들린 내용: ${finalText ? finalText : "(인식 안 됨)"}</div>
+      <button class="voice-btn" id="voice-retry">🎤 다시 말하기</button>
+    `;
+    document.getElementById("voice-retry").addEventListener("click", startListening);
+  }
+
+  function startListening() {
+    finalText = "";
+    resultEl.innerHTML = "";
+    liveEl.textContent = "";
+    statusEl.textContent = "🎙️ 듣고 있어요… 구절을 또박또박 말해보세요";
+    panel.hidden = false;
+    startBtn.hidden = true;
+
+    rec = new SR();
+    rec.lang = "ko-KR";
+    rec.interimResults = true;
+    rec.continuous = true;
+
+    rec.onresult = (e) => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finalText += t + " ";
+        else interim += t;
+      }
+      liveEl.textContent = (finalText + interim).trim();
+    };
+    rec.onerror = (e) => {
+      statusEl.textContent =
+        e.error === "not-allowed"
+          ? "마이크 권한이 필요합니다. 브라우저에서 마이크를 허용해 주세요."
+          : "음성인식 오류: " + e.error;
+    };
+    rec.onend = () => {
+      panel.hidden = true;
+      startBtn.hidden = false;
+      evaluateAndShow();
+    };
+    try {
+      rec.start();
+    } catch (err) {
+      statusEl.textContent = "음성인식을 시작할 수 없습니다.";
+    }
+  }
+
+  startBtn.addEventListener("click", startListening);
+  stopBtn.addEventListener("click", () => rec && rec.stop());
 }
 
 // 본문 토큰 중 빈칸으로 만들 인덱스를 고른다.
