@@ -192,7 +192,8 @@ function renderTestScreen(verse, stage) {
         <div class="test-sentence">${wordsHtml}</div>
         <div class="btn-row">
           <button class="answer-btn" id="show-answer-btn">정답 보기</button>
-          <button class="voice-btn" id="voice-btn">🎤 음성 암송 시작</button>
+          <button class="voice-btn" id="voice-start">🎤 암송 시작</button>
+          <button class="voice-stop" id="voice-stop" disabled>■ 암송 종료</button>
         </div>
         <div id="result-area"></div>
         <div id="answer-panel" class="answer-panel" hidden>
@@ -202,9 +203,8 @@ function renderTestScreen(verse, stage) {
         </div>
 
         <div id="voice-panel" class="voice-panel" hidden>
-          <div class="voice-status" id="voice-status">🎙️ 듣고 있어요… 구절을 또박또박 말해보세요</div>
+          <div class="voice-status" id="voice-status">🎙️ 듣고 있어요… <b>‘암송 종료’</b>를 누를 때까지 계속 들어요</div>
           <div class="voice-live" id="voice-live"></div>
-          <button class="voice-stop" id="voice-stop">■ 암송 종료</button>
         </div>
         <div id="voice-result" class="voice-result"></div>
 
@@ -287,9 +287,9 @@ function scoreSpoken(answerText, spokenText) {
 }
 
 function setupVoice(verse) {
-  const startBtn = document.getElementById("voice-btn");
-  const panel = document.getElementById("voice-panel");
+  const startBtn = document.getElementById("voice-start");
   const stopBtn = document.getElementById("voice-stop");
+  const panel = document.getElementById("voice-panel");
   const statusEl = document.getElementById("voice-status");
   const liveEl = document.getElementById("voice-live");
   const resultEl = document.getElementById("voice-result");
@@ -308,7 +308,6 @@ function setupVoice(verse) {
   }
 
   if (!SR) {
-    // 미지원 브라우저(주로 아이폰 일부 / 네이버 등 인앱): 버튼에 안내
     startBtn.addEventListener("click", () => {
       resultEl.innerHTML =
         `<div class="voice-msg">이 브라우저는 음성인식을 지원하지 않습니다.<br>크롬(안드로이드·PC)·사파리에서 이용하거나 타이핑으로 암송해 주세요.</div>`;
@@ -318,6 +317,13 @@ function setupVoice(verse) {
 
   let rec = null;
   let finalText = "";
+  let stopped = false; // 사용자가 '암송 종료'를 눌렀는지
+
+  function setRunning(running) {
+    startBtn.disabled = running;
+    stopBtn.disabled = !running;
+    panel.hidden = !running;
+  }
 
   function evaluateAndShow() {
     const { accuracy, marks, ansWords } = scoreSpoken(verse.text, finalText);
@@ -332,25 +338,17 @@ function setupVoice(verse) {
       <div class="voice-label">${passed ? "음성 암송 통과! 🎉" : `조금 더! (통과 ${VOICE_PASS}%)`}</div>
       <div class="voice-words">${wordsHtml}</div>
       <div class="voice-heard">들린 내용: ${finalText ? finalText : "(인식 안 됨)"}</div>
-      <button class="voice-btn" id="voice-retry">🎤 다시 암송</button>
     `;
-    document.getElementById("voice-retry").addEventListener("click", startListening);
   }
 
-  function startListening() {
-    finalText = "";
-    resultEl.innerHTML = "";
-    liveEl.textContent = "";
-    statusEl.textContent = "🎙️ 듣고 있어요… 구절을 또박또박 말해보세요";
-    panel.hidden = false;
-    startBtn.hidden = true;
+  // 인식 세션 하나 생성. 종료를 안 눌렀으면 자동으로 다시 시작해 계속 듣는다.
+  function newSession() {
+    const r = new SR();
+    r.lang = "ko-KR";
+    r.interimResults = true;
+    r.continuous = true;
 
-    rec = new SR();
-    rec.lang = "ko-KR";
-    rec.interimResults = true;
-    rec.continuous = true;
-
-    rec.onresult = (e) => {
+    r.onresult = (e) => {
       let interim = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
@@ -359,26 +357,44 @@ function setupVoice(verse) {
       }
       liveEl.textContent = (finalText + interim).trim();
     };
-    rec.onerror = (e) => {
-      statusEl.textContent =
-        e.error === "not-allowed"
-          ? "마이크 권한이 필요합니다. 브라우저에서 마이크를 허용해 주세요."
-          : "음성인식 오류: " + e.error;
+    r.onerror = (e) => {
+      // 권한/마이크 문제는 중단, 침묵(no-speech) 등은 자동 재시작 대상
+      if (e.error === "not-allowed" || e.error === "service-not-allowed" || e.error === "audio-capture") {
+        stopped = true;
+        statusEl.textContent = "마이크 권한이 필요합니다. 브라우저에서 마이크를 허용해 주세요.";
+      }
     };
-    rec.onend = () => {
-      panel.hidden = true;
-      startBtn.hidden = false;
+    r.onend = () => {
+      if (!stopped) {
+        // 종료를 안 눌렀으면 계속 듣기 (브라우저가 침묵 등으로 끊어도 재시작)
+        try { rec = newSession(); rec.start(); return; } catch (e) {}
+      }
+      setRunning(false);
       evaluateAndShow();
     };
-    try {
-      rec.start();
-    } catch (err) {
-      statusEl.textContent = "음성인식을 시작할 수 없습니다.";
-    }
+    return r;
   }
 
-  startBtn.addEventListener("click", startListening);
-  stopBtn.addEventListener("click", () => rec && rec.stop());
+  startBtn.addEventListener("click", () => {
+    finalText = "";
+    stopped = false;
+    resultEl.innerHTML = "";
+    liveEl.textContent = "";
+    statusEl.innerHTML = "🎙️ 듣고 있어요… <b>‘암송 종료’</b>를 누를 때까지 계속 들어요";
+    setRunning(true);
+    try {
+      rec = newSession();
+      rec.start();
+    } catch (err) {
+      setRunning(false);
+      statusEl.textContent = "음성인식을 시작할 수 없습니다.";
+    }
+  });
+
+  stopBtn.addEventListener("click", () => {
+    stopped = true;
+    if (rec) rec.stop();
+  });
 }
 
 // 본문 토큰 중 빈칸으로 만들 인덱스를 고른다.

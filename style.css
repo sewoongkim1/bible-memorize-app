@@ -199,9 +199,13 @@ h1 {
   flex-wrap: wrap;
 }
 .btn-row .answer-btn,
-.btn-row .voice-btn {
+.btn-row .voice-btn,
+.btn-row .voice-stop {
   margin-top: 0;
 }
+.btn-row .voice-stop { border-radius: 22px; padding: 10px 18px; }
+.voice-btn:disabled,
+.voice-stop:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .back-btn,
 .answer-btn {
