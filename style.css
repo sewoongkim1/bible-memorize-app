@@ -202,8 +202,12 @@ h1 {
 .btn-row .voice-btn,
 .btn-row .voice-stop {
   margin-top: 0;
+  flex: 1 1 0;
+  max-width: 170px;
+  justify-content: center;
+  padding: 11px 12px;
 }
-.btn-row .voice-stop { border-radius: 22px; padding: 10px 18px; }
+.btn-row .voice-stop { border-radius: 22px; }
 .voice-btn:disabled,
 .voice-stop:disabled { opacity: 0.4; cursor: not-allowed; }
 
