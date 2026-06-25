@@ -192,8 +192,7 @@ function renderTestScreen(verse, stage) {
         <div class="test-sentence">${wordsHtml}</div>
         <div class="btn-row">
           <button class="answer-btn" id="show-answer-btn">정답 보기</button>
-          <button class="voice-btn" id="voice-start">🎤 암송 시작</button>
-          <button class="voice-stop" id="voice-stop" disabled>■ 암송 종료</button>
+          <button class="voice-btn" id="voice-toggle">🎤 암송 시작</button>
         </div>
         <div id="result-area"></div>
         <div id="answer-panel" class="answer-panel" hidden>
@@ -287,8 +286,7 @@ function scoreSpoken(answerText, spokenText) {
 }
 
 function setupVoice(verse) {
-  const startBtn = document.getElementById("voice-start");
-  const stopBtn = document.getElementById("voice-stop");
+  const toggleBtn = document.getElementById("voice-toggle");
   const panel = document.getElementById("voice-panel");
   const statusEl = document.getElementById("voice-status");
   const liveEl = document.getElementById("voice-live");
@@ -299,7 +297,7 @@ function setupVoice(verse) {
 
   // 카카오톡 내장 브라우저: 마이크·음성인식 차단 → 외부 브라우저 안내
   if (/KAKAOTALK/i.test(ua)) {
-    startBtn.addEventListener("click", () => {
+    toggleBtn.addEventListener("click", () => {
       resultEl.innerHTML =
         `<div class="voice-msg">카카오톡 브라우저에서는 음성 암송이 동작하지 않습니다.<br>아래 버튼으로 크롬·사파리에서 열어 사용해 주세요.</div>
          <a class="voice-btn" id="voice-ext" style="margin-top:10px;" href="kakaotalk://web/openExternal?url=${encodeURIComponent(location.href)}">🔗 외부 브라우저로 열기</a>`;
@@ -308,7 +306,7 @@ function setupVoice(verse) {
   }
 
   if (!SR) {
-    startBtn.addEventListener("click", () => {
+    toggleBtn.addEventListener("click", () => {
       resultEl.innerHTML =
         `<div class="voice-msg">이 브라우저는 음성인식을 지원하지 않습니다.<br>크롬(안드로이드·PC)·사파리에서 이용하거나 타이핑으로 암송해 주세요.</div>`;
     });
@@ -318,11 +316,21 @@ function setupVoice(verse) {
   let rec = null;
   let finalText = "";
   let stopped = false; // 사용자가 '암송 종료'를 눌렀는지
+  let running = false;
 
-  function setRunning(running) {
-    startBtn.disabled = running;
-    stopBtn.disabled = !running;
-    panel.hidden = !running;
+  // 토글 버튼 상태 전환 (시작 ↔ 종료)
+  function setRunning(on) {
+    running = on;
+    panel.hidden = !on;
+    if (on) {
+      toggleBtn.textContent = "■ 암송 종료";
+      toggleBtn.classList.remove("voice-btn");
+      toggleBtn.classList.add("voice-stop");
+    } else {
+      toggleBtn.textContent = "🎤 암송 시작";
+      toggleBtn.classList.remove("voice-stop");
+      toggleBtn.classList.add("voice-btn");
+    }
   }
 
   function evaluateAndShow() {
@@ -375,25 +383,27 @@ function setupVoice(verse) {
     return r;
   }
 
-  startBtn.addEventListener("click", () => {
-    finalText = "";
-    stopped = false;
-    resultEl.innerHTML = "";
-    liveEl.textContent = "";
-    statusEl.innerHTML = "🎙️ 듣고 있어요… <b>‘암송 종료’</b>를 누를 때까지 계속 들어요";
-    setRunning(true);
-    try {
-      rec = newSession();
-      rec.start();
-    } catch (err) {
-      setRunning(false);
-      statusEl.textContent = "음성인식을 시작할 수 없습니다.";
+  toggleBtn.addEventListener("click", () => {
+    if (!running) {
+      // 시작
+      finalText = "";
+      stopped = false;
+      resultEl.innerHTML = "";
+      liveEl.textContent = "";
+      statusEl.innerHTML = "🎙️ 듣고 있어요… 다 외우면 <b>‘암송 종료’</b>를 누르세요";
+      setRunning(true);
+      try {
+        rec = newSession();
+        rec.start();
+      } catch (err) {
+        setRunning(false);
+        statusEl.textContent = "음성인식을 시작할 수 없습니다.";
+      }
+    } else {
+      // 종료
+      stopped = true;
+      if (rec) rec.stop();
     }
-  });
-
-  stopBtn.addEventListener("click", () => {
-    stopped = true;
-    if (rec) rec.stop();
   });
 }
 
