@@ -342,8 +342,7 @@ function setupVoice(verse) {
     if (passed) saveProgress(verse.no, 3); // 전체 암송 성공 → 완료 저장
 
     resultEl.innerHTML = `
-      <div class="voice-score ${passed ? "pass" : "fail"}">${accuracy}%</div>
-      <div class="voice-label">${passed ? "음성 암송 통과! 🎉" : `조금 더! (통과 ${VOICE_PASS}%)`}</div>
+      <div class="voice-summary"><span class="voice-pct ${passed ? "pass" : "fail"}">${accuracy}%</span> ${passed ? "음성 암송 통과! 🎉" : `조금 더! (통과 ${VOICE_PASS}%)`}</div>
       <div class="voice-words">${wordsHtml}</div>
       <div class="voice-heard">들린 내용: ${finalText ? finalText : "(인식 안 됨)"}</div>
     `;
