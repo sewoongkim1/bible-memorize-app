@@ -121,8 +121,23 @@ function renderVerseList(verseArr) {
       <div class="verse-ref">${v.refShort}</div>
       <div class="verse-hint">${v.hintText || ""}</div>
       <div class="verse-status ${status.cls}">${status.text}</div>
+      <button class="card-listen" aria-label="${v.refShort} 듣기" title="듣기">🔊</button>
     `;
     card.addEventListener("click", () => startTest(v));
+    // 듣기 버튼: 카드 클릭(테스트 시작)으로 번지지 않게 막고 본문을 읽어준다.
+    // 빠르게 N번 클릭하면 N번 반복해서 읽어준다(2번 클릭 → 2번 듣기).
+    const listenBtn = card.querySelector(".card-listen");
+    let clickCount = 0;
+    let clickTimer = null;
+    listenBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clickCount++;
+      if (clickTimer) clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => {
+        speakText(`${v.refFull}. ${v.text}`, null, clickCount);
+        clickCount = 0;
+      }, 350); // 350ms 안에 연속 클릭한 횟수만큼 반복
+    });
     listEl.appendChild(card);
   });
 }
@@ -192,6 +207,7 @@ function renderTestScreen(verse, stage) {
         <div class="test-sentence">${wordsHtml}</div>
         <div class="btn-row">
           <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+          <button class="answer-btn" id="listen-answer-btn" aria-label="정답 음성으로 듣기">🔊 듣기</button>
           <button class="voice-btn" id="voice-toggle">🎤 암송 시작</button>
         </div>
         <div id="result-area"></div>
@@ -214,7 +230,23 @@ function renderTestScreen(verse, stage) {
 
   document
     .getElementById("back-to-list-btn")
-    .addEventListener("click", () => renderVerseList(verses));
+    .addEventListener("click", () => { stopSpeaking(); renderVerseList(verses); });
+
+  // 정답 듣기(TTS): 출처 + 본문을 음성으로 읽어준다. (토글: 재생 중 누르면 정지)
+  const listenAnsBtn = document.getElementById("listen-answer-btn");
+  if (listenAnsBtn) {
+    listenAnsBtn.addEventListener("click", () => {
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
+        stopSpeaking();
+        listenAnsBtn.textContent = "🔊 듣기";
+        return;
+      }
+      listenAnsBtn.textContent = "⏹ 정지";
+      speakText(`${verse.refFull}. ${verse.text}`, () => {
+        listenAnsBtn.textContent = "🔊 듣기";
+      });
+    });
+  }
 
   setupAnswerToggle();
   setupAutoCheck(verse, stage);
@@ -518,6 +550,37 @@ function checkAllComplete(inputs, verse, stage) {
       .getElementById("retry-btn")
       .addEventListener("click", () => renderTestScreen(verse, stage));
   }
+}
+
+// ------------------------------------------------------------
+// 음성 합성(TTS) — 구절을 한국어로 읽어준다(설치·권한 불필요)
+// ------------------------------------------------------------
+const SPEAK_RATE = 0.7; // 읽기 속도(낮을수록 느림)
+
+// text 를 times 번 연속해서 읽어준다. (빠르게 N번 클릭하면 N번 반복)
+function speakText(text, onEnd, times = 1) {
+  if (!("speechSynthesis" in window)) {
+    alert("이 브라우저는 읽어주기(음성 합성)를 지원하지 않습니다.\n크롬·사파리에서 이용해 주세요.");
+    if (onEnd) onEnd();
+    return;
+  }
+  window.speechSynthesis.cancel(); // 중복 재생 방지
+  const n = Math.max(1, times);
+  for (let i = 0; i < n; i++) {
+    const ut = new SpeechSynthesisUtterance(text);
+    ut.lang = "ko-KR";
+    ut.rate = SPEAK_RATE;
+    ut.pitch = 1;
+    if (onEnd && i === n - 1) {
+      ut.onend = onEnd;
+      ut.onerror = onEnd;
+    }
+    window.speechSynthesis.speak(ut); // speak 는 큐에 쌓이므로 순서대로 N번 재생
+  }
+}
+
+function stopSpeaking() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
 }
 
 // ------------------------------------------------------------

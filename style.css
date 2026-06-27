@@ -177,6 +177,17 @@ h1 {
 .verse-status.status-s2 { color: var(--white); background: var(--navy); }
 .verse-status.status-done { color: var(--navy-dark); background: #f4e3ad; }
 
+/* 구절 목록 카드 '듣기' 버튼(아이콘, 한 줄 유지) */
+.card-listen {
+  flex-shrink: 0;
+  width: 36px; height: 36px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #eef1f8; border: 1px solid var(--border);
+  border-radius: 999px; font-size: 17px; cursor: pointer;
+  transition: background 0.15s;
+}
+.card-listen:hover { background: #dde4f2; }
+
 /* ---------- 화면 2: 테스트 ---------- */
 .test-top {
   display: flex;
