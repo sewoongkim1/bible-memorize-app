@@ -14,7 +14,7 @@ DTSTART:20260104T070000
 DTEND:20260104T071500
 RRULE:FREQ=DAILY;COUNT=7
 SUMMARY:📖 오직 성경, 말씀이 답이다! (시 119:105)
-DESCRIPTION:주의 말씀은 내 발의 등이요 내 길에 빛이니이다\n\n— 시편 119편 105절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=1\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
+DESCRIPTION:주의 말씀은 내 발에 등이요 내 길에 빛이니이다\n\n— 시편 119편 105절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=1\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:이번 주 암송 말씀
@@ -363,8 +363,8 @@ DTSTAMP:20260101T000000Z
 DTSTART:20260628T070000
 DTEND:20260628T071500
 RRULE:FREQ=DAILY;COUNT=7
-SUMMARY:📖 이번 주 암송 말씀을 확인하세요
-DESCRIPTION:이번 주 암송 말씀을 확인하고 암송해 보세요.\n\n암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
+SUMMARY:📖 유리 보석에 속지 마십시오 (딤전 1:11)
+DESCRIPTION:이 교훈은 내게 맡기신 바 복되신 하나님의 영광의 복음을 따름이니라\n\n— 디모데전서 1장 11절\n📺 설교 영상: https://sewoongkim1.github.io/bible-memorize-app/go/?no=26\n📝 암송 테스트: https://sewoongkim1.github.io/bible-memorize-app/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:이번 주 암송 말씀
