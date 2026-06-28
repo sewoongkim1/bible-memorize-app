@@ -27,7 +27,7 @@ async function loadVerses() {
       if (!data.verses || !data.verses.length) throw new Error("데이터 없음");
 
       verses = data.verses;
-      renderVerseList(verses);
+      maybeShowIntro(() => renderVerseList(verses)); // 첫 방문이면 인트로 먼저
       return;
     } catch (err) {
       // verses.json 실패면 조용히 API로 폴백, 둘 다 실패면 오류 표시
@@ -101,10 +101,15 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
+    <div class="list-top"><button class="help-btn" id="open-help">❓ 도움말</button></div>
     <span class="page-title">오직 성경(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
     <a class="remind-cta" href="reminders.html">🔔 매일 암송 구절 알림 받기</a>
     <div id="verse-list" class="verse-grid"></div>
   `;
+
+  document
+    .getElementById("open-help")
+    .addEventListener("click", () => renderHelp(() => renderVerseList(verseArr)));
 
   const listEl = document.getElementById("verse-list");
   listEl.innerHTML = "";
@@ -581,6 +586,107 @@ function speakText(text, onEnd, times = 1) {
 
 function stopSpeaking() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+// ------------------------------------------------------------
+// 첫 방문 인트로 + 도움말
+// ------------------------------------------------------------
+const INTRO_KEY = "memorize-intro-seen";
+
+function maybeShowIntro(next) {
+  let seen = false;
+  try { seen = localStorage.getItem(INTRO_KEY) === "1"; } catch {}
+  if (seen) return next();
+  renderIntro(next);
+}
+
+function markIntroSeen() {
+  try { localStorage.setItem(INTRO_KEY, "1"); } catch {}
+}
+
+// 첫 방문 3슬라이드 인트로
+function renderIntro(next) {
+  const slides = [
+    { icon: "📖", title: "성경말씀 암송하기", body: "성경 26구절을 단계별로 직접 채우며 암송해요.<br>등록 없이 바로 시작할 수 있어요." },
+    { icon: "✍️", title: "3단계로 익혀요", body: "① 빈칸 맛보기 (약 25%)<br>② 빈칸 늘리기 (약 65%)<br>③ 전체 암송 (100%)<br><br>맞으면 다음 칸으로, 틀리면 다시 입력해요." },
+    { icon: "🔊", title: "듣고, 말하며 암송", body: "🔊 듣기로 말씀을 들어요 (빠르게 여러 번 누르면 반복).<br>🎤 음성 암송으로 직접 말해서 점검해요." },
+  ];
+  let idx = 0;
+  const appEl = document.getElementById("app");
+
+  function draw() {
+    const s = slides[idx];
+    const last = idx === slides.length - 1;
+    appEl.innerHTML = `
+      <div class="intro-screen">
+        <div class="intro-card">
+          <div class="intro-icon">${s.icon}</div>
+          <div class="intro-title">${s.title}</div>
+          <div class="intro-body">${s.body}</div>
+          <div class="intro-dots">${slides.map((_, i) => `<span class="intro-dot ${i === idx ? "on" : ""}"></span>`).join("")}</div>
+          <div class="intro-nav">
+            <button class="intro-skip" id="intro-skip">건너뛰기</button>
+            <button class="intro-next" id="intro-next">${last ? "시작하기" : "다음 ▸"}</button>
+          </div>
+          <div class="intro-foot">도움말은 언제든 목록의 <b>❓ 도움말</b>에서 다시 볼 수 있어요</div>
+        </div>
+      </div>`;
+    document.getElementById("intro-skip").addEventListener("click", done);
+    document.getElementById("intro-next").addEventListener("click", () => {
+      if (last) done();
+      else { idx++; draw(); }
+    });
+  }
+  function done() { markIntroSeen(); next(); }
+  draw();
+}
+
+// 도움말 전체 화면 (onClose: 닫을 때 돌아갈 처리)
+function renderHelp(onClose) {
+  const appEl = document.getElementById("app");
+  appEl.innerHTML = `
+    <div class="help-screen">
+      <div class="help-card">
+        <div class="help-top">
+          <h2 class="help-title">❓ 도움말</h2>
+          <button class="help-close" id="help-close">✕ 닫기</button>
+        </div>
+
+        <section class="help-section">
+          <h3>📖 이 앱은?</h3>
+          <p>성경 26구절을 단계별로 직접 채우며 암송하는 도구예요. 등록 없이 바로 사용할 수 있고, 진행 상태는 이 기기에 저장돼요.</p>
+        </section>
+
+        <section class="help-section">
+          <h3>✍️ 3단계 학습</h3>
+          <ul>
+            <li><b>1단계</b> 빈칸 맛보기 — 일부 단어만 빈칸 (약 25%)</li>
+            <li><b>2단계</b> 빈칸 늘리기 — 더 많은 빈칸 (약 65%)</li>
+            <li><b>3단계</b> 전체 암송 — 출처만 보고 전체 입력</li>
+          </ul>
+          <p>맞으면 초록색으로 잠기고 다음 칸으로 이동해요. 틀리면 잠깐 빨갛게 표시된 뒤 다시 입력할 수 있어요. 모든 칸을 맞히면 다음 단계로 넘어가요.</p>
+        </section>
+
+        <section class="help-section">
+          <h3>🔊 말씀 듣기</h3>
+          <p>목록의 <b>🔊</b> 버튼이나 테스트 화면의 <b>🔊 듣기</b>로 말씀을 들을 수 있어요. <b>빠르게 여러 번 누르면 그 횟수만큼 반복</b>해서 읽어줘요.</p>
+        </section>
+
+        <section class="help-section">
+          <h3>🎤 음성 암송</h3>
+          <p><b>🎤 암송 시작</b>을 누르고 말씀을 소리 내어 외운 뒤 <b>■ 암송 종료</b>를 누르면 정확도를 알려줘요 (90% 이상이면 통과). 크롬·사파리에서 마이크를 허용해 주세요.</p>
+        </section>
+
+        <section class="help-section">
+          <h3>🏷️ 진행 표시</h3>
+          <p>카드의 배지로 진행을 보여줘요: <b>미시도 · 1단계 완료 · 2단계 완료 · 암송 완료 🙌</b></p>
+        </section>
+
+        <button class="help-go" id="help-go">닫고 시작하기</button>
+      </div>
+    </div>`;
+  document.getElementById("help-close").addEventListener("click", onClose);
+  document.getElementById("help-go").addEventListener("click", onClose);
 }
 
 // ------------------------------------------------------------
