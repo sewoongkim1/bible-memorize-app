@@ -607,7 +607,7 @@ function markIntroSeen() {
 // 첫 방문 3슬라이드 인트로
 function renderIntro(next) {
   const slides = [
-    { icon: "📖", title: "성경말씀 암송하기", body: "성경 26구절을 단계별로 직접 채우며 암송해요.<br>등록 없이 바로 시작할 수 있어요." },
+    { icon: "📖", title: "성경말씀 암송하기", body: "성경 구절을 단계별로 직접 채우며 암송해요.<br>등록 없이 바로 시작할 수 있어요." },
     { icon: "✍️", title: "3단계로 익혀요", body: "① 빈칸 맛보기 (약 25%)<br>② 빈칸 늘리기 (약 65%)<br>③ 전체 암송 (100%)<br><br>맞으면 다음 칸으로, 틀리면 다시 입력해요." },
     { icon: "🔊", title: "듣고, 말하며 암송", body: "🔊 듣기로 말씀을 들어요 (빠르게 여러 번 누르면 반복).<br>🎤 음성 암송으로 직접 말해서 점검해요." },
   ];
@@ -654,7 +654,7 @@ function renderHelp(onClose) {
 
         <section class="help-section">
           <h3>📖 이 앱은?</h3>
-          <p>성경 26구절을 단계별로 직접 채우며 암송하는 도구예요. 등록 없이 바로 사용할 수 있고, 진행 상태는 이 기기에 저장돼요.</p>
+          <p>성경 구절을 단계별로 직접 채우며 암송하는 도구예요. 등록 없이 바로 사용할 수 있고, 진행 상태는 이 기기에 저장돼요.</p>
         </section>
 
         <section class="help-section">
