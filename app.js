@@ -211,7 +211,7 @@ function renderTestScreen(verse, stage) {
         </div>
         <div class="test-sentence">${wordsHtml}</div>
         <div class="btn-row">
-          <button class="answer-btn" id="show-answer-btn">정답 보기</button>
+          <button class="answer-btn" id="show-answer-btn">보기</button>
           <button class="answer-btn" id="listen-answer-btn" aria-label="정답 음성으로 듣기">🔊 듣기</button>
           <button class="voice-btn" id="voice-toggle">🎤 암송 시작</button>
         </div>

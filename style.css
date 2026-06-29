@@ -484,11 +484,12 @@ h1 {
    첫 방문 인트로 + 도움말
    ============================================================ */
 
-/* 목록 상단 도움말 버튼 줄 */
-.list-top { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+/* 목록 상단 도움말 버튼 줄 (한 줄 전체 — 회원 버전과 동일) */
+.list-top { margin-bottom: 8px; }
 .help-btn {
-  background: #eef1f8; border: 1px solid var(--navy); color: var(--navy);
-  font-weight: 700; font-size: 13px; padding: 6px 13px; border-radius: 999px;
+  display: block; width: 100%;
+  background: #eef1f8; border: 1.5px solid var(--navy); color: var(--navy);
+  font-weight: 700; font-size: .98rem; padding: 12px; border-radius: 12px;
   cursor: pointer; font-family: inherit; transition: background 0.15s, color 0.15s;
 }
 .help-btn:hover { background: var(--navy); color: #fff; }
