@@ -484,12 +484,12 @@ h1 {
    첫 방문 인트로 + 도움말
    ============================================================ */
 
-/* 목록 상단 도움말 버튼 줄 (한 줄 전체 — 회원 버전과 동일) */
-.list-top { margin-bottom: 8px; }
+/* 도움말 버튼 — '매일 암송 구절 알림 받기'(remind-cta)와 동일 스타일 */
 .help-btn {
-  display: block; width: 100%;
+  display: block; max-width: 340px; width: 100%; margin: 0 auto 18px;
+  text-align: center;
   background: #eef1f8; border: 1.5px solid var(--navy); color: var(--navy);
-  font-weight: 700; font-size: .98rem; padding: 12px; border-radius: 12px;
+  font-weight: 700; font-size: 14px; padding: 11px 16px; border-radius: 22px;
   cursor: pointer; font-family: inherit; transition: background 0.15s, color 0.15s;
 }
 .help-btn:hover { background: var(--navy); color: #fff; }

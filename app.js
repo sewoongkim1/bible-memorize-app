@@ -101,9 +101,9 @@ const STATUS_LABEL = {
 function renderVerseList(verseArr) {
   const appEl = document.getElementById("app");
   appEl.innerHTML = `
-    <div class="list-top"><button class="help-btn" id="open-help">❓ 도움말</button></div>
     <span class="page-title">오직 성경(Sola Scriptura), 오직 은혜(Sola Gratia)</span>
     <a class="remind-cta" href="reminders.html">🔔 매일 암송 구절 알림 받기</a>
+    <div class="list-top"><button class="help-btn" id="open-help">❓ 도움말</button></div>
     <div id="verse-list" class="verse-grid"></div>
   `;
 
