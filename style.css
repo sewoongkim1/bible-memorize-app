@@ -629,3 +629,5 @@ h1 {
 
 /* 상태 카드 톤 */
 .dark .verse-card.status-done{ background:#20261c; }
+.dark .answer-text, .dark .voice-heard, .dark .voice-words,
+.dark .voice-summary, .dark .voice-status, .dark .voice-live{ color:#cdd3dd; }
