@@ -13,6 +13,19 @@ let verses = []; // 화면에 쓰는 구절 데이터
 // ------------------------------------------------------------
 // 데이터 로드
 // ------------------------------------------------------------
+// 시작 스플래시 — 광고용으로 시작 후 최소 5초 유지 후 사라진다.
+const SPLASH_MIN_MS = 5000;
+function dismissSplash() {
+  const s = document.getElementById("splash");
+  if (!s) return;
+  const start = window.__splashStart || Date.now();
+  const wait = Math.max(0, SPLASH_MIN_MS - (Date.now() - start));
+  setTimeout(() => {
+    s.classList.add("hide");
+    setTimeout(() => { if (s.parentNode) s.parentNode.removeChild(s); }, 450);
+  }, wait);
+}
+
 async function loadVerses() {
   const listEl = document.getElementById("verse-list");
   listEl.innerHTML = "<p>불러오는 중...</p>";
@@ -27,11 +40,13 @@ async function loadVerses() {
       if (!data.verses || !data.verses.length) throw new Error("데이터 없음");
 
       verses = data.verses;
+      dismissSplash();
       maybeShowIntro(() => renderVerseList(verses)); // 첫 방문이면 인트로 먼저
       return;
     } catch (err) {
       // verses.json 실패면 조용히 API로 폴백, 둘 다 실패면 오류 표시
       if (url === API_URL) {
+        dismissSplash();
         listEl.innerHTML = `<p class="error">연결 실패: ${err.message}</p>`;
       }
     }

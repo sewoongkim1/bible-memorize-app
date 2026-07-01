@@ -564,3 +564,26 @@ h1 {
   transition: background .15s, transform .12s, box-shadow .15s;
 }
 .help-go:hover { background: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13,27,62,.28); }
+
+/* ============================================================
+   앱 시작 스플래시 (광고용, 최소 5초)
+   ============================================================ */
+#splash{
+  position:fixed; inset:0; z-index:9999;
+  background:linear-gradient(135deg,#0d1b3e 0%,#1a3a6b 50%,#0d4a7a 100%);
+  display:flex; align-items:center; justify-content:center;
+  opacity:1; transition:opacity .45s ease;
+}
+#splash.hide{ opacity:0; pointer-events:none; }
+.splash-inner{ text-align:center; animation:splashPop .5s ease; padding:24px; }
+#splash-logo{
+  width:112px; height:auto; margin-bottom:30px;
+  background:rgba(255,255,255,.92); border-radius:18px; padding:12px;
+  box-shadow:0 8px 26px rgba(0,0,0,.28);
+}
+.splash-title{
+  font-family:"Nanum Myeongjo",serif; color:#fff; font-size:1.4rem;
+  font-weight:800; letter-spacing:.5px; line-height:1.4; padding:0 10px;
+}
+.splash-sub{ color:rgba(255,255,255,.8); font-size:.95rem; margin-top:12px; padding:0 10px; }
+@keyframes splashPop{ from{ transform:scale(.92); opacity:0 } to{ transform:scale(1); opacity:1 } }
