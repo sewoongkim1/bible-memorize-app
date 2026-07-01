@@ -697,6 +697,15 @@ function renderHelp(onClose) {
           <p>카드의 배지로 진행을 보여줘요: <b>미시도 · 1단계 완료 · 2단계 완료 · 암송 완료 🙌</b></p>
         </section>
 
+        <section class="help-section">
+          <h3>🔒 개인정보 안내</h3>
+          <ul>
+            <li>이 앱은 <b>완전 익명</b>이에요. 이름·연락처 등 어떤 개인정보도 <b>입력받지 않습니다</b>.</li>
+            <li>진행 상태(어느 구절 몇 단계)는 <b>이 기기(브라우저)에만</b> 저장되고 <b>서버로 전송되지 않아요</b>.</li>
+            <li>기기를 바꾸거나 브라우저 기록을 지우면 진행 상태는 사라집니다.</li>
+          </ul>
+        </section>
+
         <button class="help-go" id="help-go">닫고 시작하기</button>
       </div>
     </div>`;
