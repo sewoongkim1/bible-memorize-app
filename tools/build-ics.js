@@ -55,7 +55,7 @@ const end = `${pad(Math.floor(endTotal / 60))}${pad(endTotal % 60)}00`;
 const lines = [
   "BEGIN:VCALENDAR",
   "VERSION:2.0",
-  "PRODID:-//고척교회 제자양육부//말씀 암송 리마인드//KO",
+  "PRODID:-//고척교회 제자양육부//성경말씀 암송 리마인드//KO",
   "CALSCALE:GREGORIAN",
   "METHOD:PUBLISH",
   "X-WR-CALNAME:오직 성경, 말씀이 답이다!",
