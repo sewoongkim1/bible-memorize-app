@@ -14,7 +14,7 @@ let verses = []; // 화면에 쓰는 구절 데이터
 // 데이터 로드
 // ------------------------------------------------------------
 // 시작 스플래시 — 광고용으로 시작 후 최소 5초 유지 후 사라진다.
-const SPLASH_MIN_MS = 5000;
+const SPLASH_MIN_MS = 3000;
 function dismissSplash() {
   const s = document.getElementById("splash");
   if (!s) return;
