@@ -292,6 +292,11 @@ GET https://script.google.com/macros/s/AKfycbzO4GDAy0hJBbZ-L3hVuZQI4cqnjiZdy2afU
 - [x] **음성 암송 기능** (Web Speech API, LCS 90% 통과, 카카오톡/미지원 브라우저 예외 처리)
 - [x] **정적 `verses.json` + API 폴백** 데이터 구조 및 GitHub Actions 자동 갱신
 - [x] **GitHub Pages 배포** (공개 운영 중)
+- [x] **말씀 듣기(TTS)** — 목록 카드 🔊 버튼(빠르게 N번 클릭 시 N번 반복) + 테스트 화면 '🔊 듣기'
+- [x] **첫 방문 인트로(3슬라이드) + ❓ 도움말 화면**
+- [x] **시작 스플래시**(파란 배경 + 로고 + 문구, 최소 5초 — 광고용)
+
+> 참고: 로그인·순위·관리자 통계 등은 **회원 버전(`bible-memorize-church-app`)** 에서 별도로 구현됨. 본 문서는 익명 버전 기준.
 
 ### 미해결 / 다음 작업
 
