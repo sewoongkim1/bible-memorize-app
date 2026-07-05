@@ -580,7 +580,13 @@ h1 {
   width:112px; height:auto; margin-bottom:30px;
   background:rgba(255,255,255,.92); border-radius:18px; padding:12px;
   box-shadow:0 8px 26px rgba(0,0,0,.28);
+  animation: splashPulse 2.4s ease-in-out infinite;
 }
+@keyframes splashPulse{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.07); }
+}
+@media (prefers-reduced-motion: reduce){ #splash-logo{ animation:none; } }
 .splash-title{
   font-family:"Nanum Myeongjo",serif; color:#fff; font-size:1.15rem;
   font-weight:800; letter-spacing:.5px; line-height:1.4; padding:0 10px;
